@@ -55,8 +55,17 @@ class BoardWidget(QFrame):
         self.is_white_winner = False
         self.is_black_winner = False
         self.is_cut_now = is_cut_now
-        self.win_width = self.win_height = win_width
-        self.setGeometry(300, 100, self.win_width, self.win_height)
+        self.win_width = win_width
+        self.setGeometry(300, 100, self.win_width, self.win_width)
+
+    def paintEvent(self, e):
+        qp = QPainter()
+        qp.begin(self)
+        self.main(qp)
+        self.update()
+        qp.end()
+        if self.is_black_winner or self.is_white_winner:
+            self.show_result_window()
 
     def main(self, qp):
         game_field = self.game_field
@@ -73,7 +82,6 @@ class BoardWidget(QFrame):
                 self.end_window = EndGameWindow('Nobody is winner...')
                 self.end_window.show()
 
-            # Логика игры
             if self.mouse_x is not None or not self.current_player.is_really_player:
                 column, row = self.mouse_x, self.mouse_y
 
@@ -171,15 +179,6 @@ class BoardWidget(QFrame):
             self.timer.setSingleShot(True)
             self.timer.start(600)
         self.current_player = other_player
-
-    def paintEvent(self, e):
-        qp = QPainter()
-        qp.begin(self)
-        self.main(qp)
-        self.update()
-        qp.end()
-        if self.is_black_winner or self.is_white_winner:
-            self.show_result_window()
 
     def is_in_positions(self, checker, positions):
         for list in positions:
