@@ -164,8 +164,12 @@ class StartMenu(QMainWindow):
         try:
             value = int(string_value)
             return value
-        except:
+        except ValueError:
+            pass
+        try:
             return dict[string_value]
+        except KeyError:
+            pass
 
 
 if __name__ == "__main__":

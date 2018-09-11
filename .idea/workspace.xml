@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae6edccd-f453-4b88-8486-904f88f3312d" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/boardWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/boardWidget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/startMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/startMenu.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -13,11 +13,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="boardWidget.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="boardWidget.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/boardWidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="107" column="60" lean-forward="true" selection-start-line="107" selection-start-column="60" selection-end-line="107" selection-end-column="60" />
+            <state relative-caret-position="1585">
+              <caret line="101" column="10" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="10" />
               <folding>
                 <element signature="e#46#80#0" expanded="true" />
               </folding>
@@ -28,7 +28,7 @@
       <file leaf-file-name="cell.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cell.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="813">
+            <state relative-caret-position="3459">
               <caret line="197" column="26" selection-start-line="197" selection-start-column="26" selection-end-line="197" selection-end-column="26" />
               <folding>
                 <element signature="e#46#80#0" expanded="true" />
@@ -37,11 +37,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="startMenu.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="startMenu.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/startMenu.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="32" selection-start-line="32" selection-end-line="32" />
+            <state relative-caret-position="184">
+              <caret line="171" column="16" selection-start-line="171" selection-start-column="16" selection-end-line="171" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -58,7 +58,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>authorEdit</find>
-      <find>(USER32.GetSystemMetrics(1) - 100) // int(FIELD_DIMENSION)</find>
+      <find />
       <find>qbtn</find>
       <find>should</find>
       <find>di</find>
@@ -153,9 +153,9 @@
         <option value="$PROJECT_DIR$/checker.py" />
         <option value="$PROJECT_DIR$/field.py" />
         <option value="$PROJECT_DIR$/player.py" />
-        <option value="$PROJECT_DIR$/startMenu.py" />
         <option value="$PROJECT_DIR$/cell.py" />
         <option value="$PROJECT_DIR$/boardWidget.py" />
+        <option value="$PROJECT_DIR$/startMenu.py" />
       </list>
     </option>
   </component>
@@ -199,7 +199,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.startMenu">
+  <component name="RunManager" selected="Python.tests">
     <configuration name="StartMenu" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="py" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -299,10 +299,10 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.tests" />
         <item itemvalue="Python.startMenu" />
         <item itemvalue="Python.StartMenu" />
         <item itemvalue="Python.first_lesson" />
-        <item itemvalue="Python.tests" />
         <item itemvalue="Python.test" />
       </list>
     </recent_temporary>
@@ -552,23 +552,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/startMenu.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cell.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="813">
-          <caret line="197" column="26" selection-start-line="197" selection-start-column="26" selection-end-line="197" selection-end-column="26" />
-          <folding>
-            <element signature="e#46#80#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/load_game.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1665" />
@@ -576,11 +559,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/boardWidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="107" column="60" lean-forward="true" selection-start-line="107" selection-start-column="60" selection-end-line="107" selection-end-column="60" />
+        <state relative-caret-position="1585">
+          <caret line="101" column="10" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="10" />
           <folding>
             <element signature="e#46#80#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cell.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3459">
+          <caret line="197" column="26" selection-start-line="197" selection-start-column="26" selection-end-line="197" selection-end-column="26" />
+          <folding>
+            <element signature="e#46#80#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/startMenu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="171" column="16" selection-start-line="171" selection-start-column="16" selection-end-line="171" selection-end-column="16" />
         </state>
       </provider>
     </entry>
