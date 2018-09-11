@@ -45,14 +45,8 @@ class BoardWidget(QFrame):
         if self.really_player_color == CHECKER_BLACK_COLOR:
             if self.game_mode == 'PvE':
                 white_player.is_really_player = False
-            elif self.game_mode == 'EvE':
-                white_player.is_really_player = False
-                black_player.is_really_player = False
         else:
             if self.game_mode == 'PvE':
-                black_player.is_really_player = False
-            elif self.game_mode == 'EvE':
-                white_player.is_really_player = False
                 black_player.is_really_player = False
         self.chosen_x = chosen_x
         self.chosen_y = chosen_y
@@ -74,7 +68,7 @@ class BoardWidget(QFrame):
 
         # Ищем шашки, которыми можем рубить или просто ходить
         if not self.timer.isActive():
-            if not self.is_cut_now:
+            if not self.is_cut_now and len(self.walking_checkers) == 0:
                 result_positions = []
                 for checker in self.current_player.checkers:
                     # checker.positions = checker.find_positions_after_cut(None, game_field, self.current_player)
@@ -83,8 +77,8 @@ class BoardWidget(QFrame):
                     for list in checker.positions:
                         for c in list:
                             c.position = True
-                            #way.append(c)
-                    #checker.positions = way
+                            way.append(c)
+                    checker.positions = way
                     if len(checker.positions) > 0:
                         checker.is_walking = True
                         self.walking_checkers.append(checker)
@@ -94,17 +88,9 @@ class BoardWidget(QFrame):
                         if len(checker.positions) > 0:
                             checker.is_walking = True
                             self.walking_checkers.append(checker)
-                # elif not self.is_cut_now:
-                #     result_positions = []
-                #     for checker in self.walking_checkers:
-                #         checker.find_longest_cut(None, game_field, result_positions, self.current_player, checker)
-                #         for c in checker.positions:
-                #             c.position = True
 
             # Проверка на партию в ничью
             if len(self.walking_checkers) == 0 and len(self.current_player.checkers) != 0:
-                # with open('load_game.txt', 'w', encoding='utf-8') as f:
-                #     f.truncate()
                 self.board.close()
                 self.end_window = EndGameWindow('Nobody is winner...')
                 self.end_window.show()
@@ -117,7 +103,8 @@ class BoardWidget(QFrame):
                     chosen_cell = choice(self.walking_checkers)
                     chosen_cell.is_chosen = True
                     self.chosen_x, self.chosen_y = chosen_cell.y, chosen_cell.x
-                    empty_cell = choice(chosen_cell.positions)
+                    # empty_cell = choice(chosen_cell.positions)
+                    empty_cell = chosen_cell.positions[0]
                     row, column = empty_cell.y, empty_cell.x
                     self.current_player.is_complete = False
 
@@ -170,15 +157,13 @@ class BoardWidget(QFrame):
                             for i in range(self.field_dimension):
                                 for j in range(self.field_dimension):
                                     self.game_field.field[i][j].position = False
+                                    self.game_field.field[i][j].is_walking = False
                                     self.game_field.field[i][j].positions = []
                         # Проверка завершения хода игрока
                         other_player = self.players[self.current_player]
-                        if self.current_player.is_really_player or (not other_player.is_really_player and
-                                                                    not self.current_player.is_really_player):
+                        if self.current_player.is_really_player:
                             self.timer.setSingleShot(True)
                             self.timer.start(600)
-                        for checker in self.current_player.checkers:
-                            checker.is_walking = False
                         self.current_player = other_player
                 self.mouse_x = None
                 self.mouse_y = None
@@ -196,8 +181,6 @@ class BoardWidget(QFrame):
         return False
 
     def show_result_window(self):
-        # with open('load_game.txt', 'w', encoding='utf-8') as f:
-        #     f.truncate()
         text = 'White player is winner!'
         if self.is_black_winner:
             text = 'Black player is winner!'

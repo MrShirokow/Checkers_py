@@ -21,7 +21,6 @@ class Cell():
         self.position = False
         self.cell_color = cell_color
         self.positions = []
-        self.cut_positions = []
         self.field_dimension = field_dimension
         self.cell_length = cell_length
         self.is_walking = False

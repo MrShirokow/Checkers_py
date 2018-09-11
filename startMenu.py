@@ -30,7 +30,6 @@ class StartMenu(QMainWindow):
         self.game_mode_box = QComboBox(self)
         self.game_mode_box.addItem('PvP')
         self.game_mode_box.addItem('PvE')
-        self.game_mode_box.addItem('EvE')
         self.game_mode_box.move(320, 55)
         self.game_mode_box.activated[str].connect(self.set_game_mode)
         game_mod_label = QLabel('Choose start player color: ', self)
