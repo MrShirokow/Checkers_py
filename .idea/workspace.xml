@@ -17,11 +17,11 @@
       <file leaf-file-name="boardWidget.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/boardWidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="250">
-              <caret line="161" column="81" selection-start-line="161" selection-start-column="81" selection-end-line="161" selection-end-column="81" />
+            <state relative-caret-position="88">
+              <caret line="155" column="50" lean-forward="true" selection-start-line="155" selection-start-column="50" selection-end-line="155" selection-end-column="50" />
               <folding>
                 <element signature="e#46#80#0" expanded="true" />
-                <marker date="1536695579730" expanded="true" signature="6401:6519" ph="..." />
+                <marker date="1536696747119" expanded="true" signature="6331:6449" ph="..." />
               </folding>
             </state>
           </provider>
@@ -30,8 +30,8 @@
       <file leaf-file-name="cell.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cell.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="27" column="22" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="22" />
+            <state relative-caret-position="180">
+              <caret line="37" column="75" lean-forward="true" selection-start-line="37" selection-start-column="75" selection-end-line="37" selection-end-column="75" />
               <folding>
                 <element signature="e#46#80#0" expanded="true" />
               </folding>
@@ -555,8 +555,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/cell.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="27" column="22" selection-start-line="27" selection-start-column="13" selection-end-line="27" selection-end-column="22" />
+        <state relative-caret-position="180">
+          <caret line="37" column="75" lean-forward="true" selection-start-line="37" selection-start-column="75" selection-end-line="37" selection-end-column="75" />
           <folding>
             <element signature="e#46#80#0" expanded="true" />
           </folding>
@@ -565,11 +565,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/boardWidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="250">
-          <caret line="161" column="81" selection-start-line="161" selection-start-column="81" selection-end-line="161" selection-end-column="81" />
+        <state relative-caret-position="88">
+          <caret line="155" column="50" lean-forward="true" selection-start-line="155" selection-start-column="50" selection-end-line="155" selection-end-column="50" />
           <folding>
             <element signature="e#46#80#0" expanded="true" />
-            <marker date="1536695579730" expanded="true" signature="6401:6519" ph="..." />
+            <marker date="1536696747119" expanded="true" signature="6331:6449" ph="..." />
           </folding>
         </state>
       </provider>

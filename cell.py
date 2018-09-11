@@ -8,10 +8,6 @@ from copy import copy
 
 
 class Cell():
-    """
-    Класс клетки.
-    """
-
     def __init__(self, x, y, checker, checker_color, cell_color,
                  field_dimension, cell_length, is_king=False, is_chosen=False):
         self.x = x
@@ -42,10 +38,10 @@ class Cell():
                 if len(result_positions) > len(start_checker.positions[0]):
                     start_checker.positions = []
                     start_checker.positions.append(copy(result_positions))
+                elif len(result_positions) == len(start_checker.positions[0]):
+                    start_checker.positions.append(copy(result_positions))
             else:
                 start_checker.positions.append(copy(result_positions))
-            # elif len(result_positions) == len(start_checker.positions):
-            #    start_checker.positions = result_positions + start_checker.positions
         else:
             for cell in positions:
                 result_positions.append(cell)

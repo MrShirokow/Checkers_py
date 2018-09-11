@@ -66,23 +66,25 @@ class BoardWidget(QFrame):
         self.players = {game_field.white_player: game_field.black_player,
                         game_field.black_player: game_field.white_player}
 
-        # Ищем шашки, которыми можем рубить или просто ходить
+        # Поиск шашек, которые...
         if not self.timer.isActive():
             if not self.is_cut_now and len(self.walking_checkers) == 0:
                 result_positions = []
+                # ... могут рубить
                 for checker in self.current_player.checkers:
-                    # checker.positions = checker.find_positions_after_cut(None, game_field, self.current_player)
                     checker.find_longest_cut(None, game_field, result_positions, self.current_player, checker)
                     way = []
                     for list in checker.positions:
                         for c in list:
                             c.position = True
-                            way.append(c)
+                            if c not in way:
+                                way.append(c)
                     checker.positions = way
                     if len(checker.positions) > 0:
                         checker.is_walking = True
                         self.walking_checkers.append(checker)
                 if len(self.walking_checkers) == 0:
+                    # ... могут сделать холостой шаг
                     for checker in self.current_player.checkers:
                         checker.positions = checker.find_positions_after_step(self.current_player, self.game_field)
                         if len(checker.positions) > 0:
@@ -103,7 +105,6 @@ class BoardWidget(QFrame):
                     chosen_cell = choice(self.walking_checkers)
                     chosen_cell.is_chosen = True
                     self.chosen_x, self.chosen_y = chosen_cell.y, chosen_cell.x
-                    # empty_cell = choice(chosen_cell.positions)
                     empty_cell = chosen_cell.positions[0]
                     row, column = empty_cell.y, empty_cell.x
                     self.current_player.is_complete = False
@@ -150,9 +151,10 @@ class BoardWidget(QFrame):
                         game_field.field[self.chosen_x][self.chosen_y].is_chosen = False
                         self.chosen_x, self.chosen_y = None, None
 
+                    # Проверка завершения хода игрока
                     if self.current_player.is_complete:
-                        # ----------------------------------------------------------------------
                         self.walking_checkers = []
+
                         if not self.is_cut_now:
                             for i in range(self.field_dimension):
                                 for j in range(self.field_dimension):
@@ -160,7 +162,7 @@ class BoardWidget(QFrame):
                                     self.game_field.field[i][j].is_walking = False
                                     self.game_field.field[i][j].positions = []
                                     self.game_field.field[i][j].is_chosen = False
-                        # Проверка завершения хода игрока
+
                         other_player = self.players[self.current_player]
                         if self.current_player.is_really_player:
                             self.timer.setSingleShot(True)
