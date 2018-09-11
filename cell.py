@@ -153,7 +153,7 @@ class Cell():
                     positions.append(game_field.field[self.y + dir_x][self.x + dir_y])
         return positions
 
-    def make_step(self, empty_cell, current_player, game):
+    def move(self, empty_cell, current_player, game):
         self.is_walking = False
         current_player.remove_checker(self)
         empty_cell.checker_color, self.checker_color = self.checker_color, empty_cell.checker_color
@@ -195,7 +195,7 @@ class Cell():
             game.game_field.field[game.chosen_x][game.chosen_y].is_chosen = False
             game.chosen_x, game.chosen_y = empty_cell.y, empty_cell.x
             game.game_field.field[game.chosen_x][game.chosen_y].is_chosen = True
-            self.make_step(empty_cell, game.current_player, game)
+            self.move(empty_cell, game.current_player, game)
         game.check_is_someone_winner()
 
     def check_is_king(self, game_field, is_cut_now):

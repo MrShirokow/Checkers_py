@@ -58,40 +58,16 @@ class BoardWidget(QFrame):
         self.win_width = self.win_height = win_width
         self.setGeometry(300, 100, self.win_width, self.win_height)
 
-    def paintEvent(self, e):
-        qp = QPainter()
-        qp.begin(self)
+    def main(self, qp):
         game_field = self.game_field
         game_field.draw_field(qp)
         self.players = {game_field.white_player: game_field.black_player,
                         game_field.black_player: game_field.white_player}
 
-        # Поиск шашек, которые...
         if not self.timer.isActive():
             if not self.is_cut_now and len(self.walking_checkers) == 0:
-                result_positions = []
-                # ... могут рубить
-                for checker in self.current_player.checkers:
-                    checker.find_longest_cut(None, game_field, result_positions, self.current_player, checker)
-                    way = []
-                    for list in checker.positions:
-                        for c in list:
-                            c.position = True
-                            if c not in way:
-                                way.append(c)
-                    checker.positions = way
-                    if len(checker.positions) > 0:
-                        checker.is_walking = True
-                        self.walking_checkers.append(checker)
-                if len(self.walking_checkers) == 0:
-                    # ... могут сделать холостой шаг
-                    for checker in self.current_player.checkers:
-                        checker.positions = checker.find_positions_after_step(self.current_player, self.game_field)
-                        if len(checker.positions) > 0:
-                            checker.is_walking = True
-                            self.walking_checkers.append(checker)
+                self.find_walking_checkers(game_field)
 
-            # Проверка на партию в ничью
             if len(self.walking_checkers) == 0 and len(self.current_player.checkers) != 0:
                 self.board.close()
                 self.end_window = EndGameWindow('Nobody is winner...')
@@ -100,17 +76,16 @@ class BoardWidget(QFrame):
             # Логика игры
             if self.mouse_x is not None or not self.current_player.is_really_player:
                 column, row = self.mouse_x, self.mouse_y
+
                 if not self.current_player.is_really_player:
-                    # Заходим, если игрок - ПК
                     chosen_cell = choice(self.walking_checkers)
                     chosen_cell.is_chosen = True
                     self.chosen_x, self.chosen_y = chosen_cell.y, chosen_cell.x
-                    empty_cell = chosen_cell.positions[0]
+                    empty_cell = choice(chosen_cell.positions)
                     row, column = empty_cell.y, empty_cell.x
                     self.current_player.is_complete = False
 
                 if self.chosen_x is None:
-                    # Первичный заход, выбор шашки
                     self.current_player.is_complete = False
                     if not game_field.field[row][column].checker:
                         pass
@@ -120,60 +95,89 @@ class BoardWidget(QFrame):
                             self.chosen_x, self.chosen_y = row, column
                             chosen_cell.is_chosen = True
                 else:
-                    # Проверяем на сруб
                     if game_field.field[self.chosen_x][self.chosen_y].is_correct_cut(game_field.field[row][column],
-                                                                                     game_field) and \
-                            game_field.field[row][column] in game_field.field[self.chosen_x][self.chosen_y].positions:
-                        self.is_cut_now = True
-                        enemy_cells = game_field.field[self.chosen_x][self.chosen_y].get_enemies(
-                            game_field.field[row][column], game_field)
-                        previous_cell = game_field.field[self.chosen_x][self.chosen_y]
-                        game_field.field[self.chosen_x][self.chosen_y].cut(game_field.field[row][column],
-                                                                           enemy_cells, self)
-                        positions = game_field.field[row][column].find_positions_after_cut(previous_cell, game_field,
-                                                                                           self.current_player)
-                        if len(positions) == 0:
-                            self.current_player.is_complete = True
-                            game_field.field[self.chosen_x][self.chosen_y].is_chosen = False
-                            self.chosen_x, self.chosen_y = None, None
-                            self.is_cut_now = False
-                        game_field.field[row][column].check_is_king(game_field, self.is_cut_now)
+                                                                                     game_field):
+                        self.cut_move(game_field, row, column)
                     elif not self.is_cut_now:
-                        # Проверяем на холостой ход
-                        if game_field.field[self.chosen_x][self.chosen_y].is_step_possible(
-                                game_field.field[row][column], self.current_player, game_field) and \
-                                game_field.field[row][column] in game_field.field[self.chosen_x][
-                            self.chosen_y].positions:
-                            game_field.field[self.chosen_x][self.chosen_y].make_step(game_field.field[row][column],
-                                                                                     self.current_player, self)
-                            self.current_player.is_complete = True
-                            game_field.field[row][column].check_is_king(game_field, self.is_cut_now)
-                        game_field.field[self.chosen_x][self.chosen_y].is_chosen = False
-                        self.chosen_x, self.chosen_y = None, None
+                        self.make_step(game_field, row, column)
 
-                    # Проверка завершения хода игрока
                     if self.current_player.is_complete:
-                        self.walking_checkers = []
-
-                        if not self.is_cut_now:
-                            for i in range(self.field_dimension):
-                                for j in range(self.field_dimension):
-                                    self.game_field.field[i][j].position = False
-                                    self.game_field.field[i][j].is_walking = False
-                                    self.game_field.field[i][j].positions = []
-                                    self.game_field.field[i][j].is_chosen = False
-
-                        other_player = self.players[self.current_player]
-                        if self.current_player.is_really_player:
-                            self.timer.setSingleShot(True)
-                            self.timer.start(600)
-                        self.current_player = other_player
+                        self.change_player()
                 self.mouse_x = None
                 self.mouse_y = None
 
+    def find_walking_checkers(self, game_field):
+        result_positions = []
+        for checker in self.current_player.checkers:
+            checker.find_longest_cut(None, game_field, result_positions, self.current_player, checker)
+            way = []
+            for list in checker.positions:
+                for c in list:
+                    c.position = True
+                    if c not in way:
+                        way.append(c)
+            checker.positions = way
+            if len(checker.positions) > 0:
+                checker.is_walking = True
+                self.walking_checkers.append(checker)
+        if len(self.walking_checkers) == 0:
+            for checker in self.current_player.checkers:
+                checker.positions = checker.find_positions_after_step(self.current_player, self.game_field)
+                if len(checker.positions) > 0:
+                    checker.is_walking = True
+                    self.walking_checkers.append(checker)
+
+    def cut_move(self, game_field, checked_x, checked_y):
+        if game_field.field[checked_x][checked_y] in game_field.field[self.chosen_x][self.chosen_y].positions:
+            self.is_cut_now = True
+            enemy_cells = game_field.field[self.chosen_x][self.chosen_y].get_enemies(
+                game_field.field[checked_x][checked_y], game_field)
+            previous_cell = game_field.field[self.chosen_x][self.chosen_y]
+            game_field.field[self.chosen_x][self.chosen_y].cut(game_field.field[checked_x][checked_y],
+                                                               enemy_cells, self)
+            positions = game_field.field[checked_x][checked_y].find_positions_after_cut(previous_cell, game_field,
+                                                                                        self.current_player)
+            if len(positions) == 0:
+                self.current_player.is_complete = True
+                game_field.field[self.chosen_x][self.chosen_y].is_chosen = False
+                self.chosen_x, self.chosen_y = None, None
+                self.is_cut_now = False
+            game_field.field[checked_x][checked_y].check_is_king(game_field, self.is_cut_now)
+
+    def make_step(self, game_field, checked_x, checked_y):
+        if game_field.field[self.chosen_x][self.chosen_y].is_step_possible(game_field.field[checked_x][checked_y],
+                                                                           self.current_player,
+                                                                           game_field):
+            if game_field.field[checked_x][checked_y] in game_field.field[self.chosen_x][self.chosen_y].positions:
+                game_field.field[self.chosen_x][self.chosen_y].move(game_field.field[checked_x][checked_y],
+                                                                    self.current_player, self)
+                self.current_player.is_complete = True
+                game_field.field[checked_x][checked_y].check_is_king(game_field, self.is_cut_now)
+        game_field.field[self.chosen_x][self.chosen_y].is_chosen = False
+        self.chosen_x, self.chosen_y = None, None
+
+    def change_player(self):
+        self.walking_checkers = []
+        if not self.is_cut_now:
+            for i in range(self.field_dimension):
+                for j in range(self.field_dimension):
+                    self.game_field.field[i][j].position = False
+                    self.game_field.field[i][j].is_walking = False
+                    self.game_field.field[i][j].positions = []
+                    self.game_field.field[i][j].is_chosen = False
+
+        other_player = self.players[self.current_player]
+        if self.current_player.is_really_player:
+            self.timer.setSingleShot(True)
+            self.timer.start(600)
+        self.current_player = other_player
+
+    def paintEvent(self, e):
+        qp = QPainter()
+        qp.begin(self)
+        self.main(qp)
         self.update()
         qp.end()
-
         if self.is_black_winner or self.is_white_winner:
             self.show_result_window()
 
