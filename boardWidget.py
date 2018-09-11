@@ -144,7 +144,7 @@ class BoardWidget(QFrame):
                                 game_field.field[row][column] in game_field.field[self.chosen_x][
                             self.chosen_y].positions:
                             game_field.field[self.chosen_x][self.chosen_y].make_step(game_field.field[row][column],
-                                                                                     self.current_player)
+                                                                                     self.current_player, self)
                             self.current_player.is_complete = True
                             game_field.field[row][column].check_is_king(game_field, self.is_cut_now)
                         game_field.field[self.chosen_x][self.chosen_y].is_chosen = False
@@ -159,6 +159,7 @@ class BoardWidget(QFrame):
                                     self.game_field.field[i][j].position = False
                                     self.game_field.field[i][j].is_walking = False
                                     self.game_field.field[i][j].positions = []
+                                    self.game_field.field[i][j].is_chosen = False
                         # Проверка завершения хода игрока
                         other_player = self.players[self.current_player]
                         if self.current_player.is_really_player:

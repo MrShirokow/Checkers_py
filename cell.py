@@ -40,7 +40,8 @@ class Cell():
         if positions == []:
             if len(start_checker.positions) > 0:
                 if len(result_positions) > len(start_checker.positions[0]):
-                    start_checker.positions[0] = copy(result_positions)
+                    start_checker.positions = []
+                    start_checker.positions.append(copy(result_positions))
             else:
                 start_checker.positions.append(copy(result_positions))
             # elif len(result_positions) == len(start_checker.positions):
@@ -156,13 +157,16 @@ class Cell():
                     positions.append(game_field.field[self.y + dir_x][self.x + dir_y])
         return positions
 
-    def make_step(self, empty_cell, current_player):
+    def make_step(self, empty_cell, current_player, game):
         self.is_walking = False
         current_player.remove_checker(self)
         empty_cell.checker_color, self.checker_color = self.checker_color, empty_cell.checker_color
         empty_cell.checker, self.checker = self.checker, empty_cell.checker
         empty_cell.is_king, self.is_king = self.is_king, empty_cell.is_king
         empty_cell.positions, self.positions = self.positions, empty_cell.positions
+        empty_cell.positions.remove(empty_cell)
+        game.walking_checkers.remove(self)
+        game.walking_checkers.append(empty_cell)
         current_player.add_checker(empty_cell)
 
     def is_correct_cut(self, empty_cell, game_field):
@@ -195,7 +199,7 @@ class Cell():
             game.game_field.field[game.chosen_x][game.chosen_y].is_chosen = False
             game.chosen_x, game.chosen_y = empty_cell.y, empty_cell.x
             game.game_field.field[game.chosen_x][game.chosen_y].is_chosen = True
-            self.make_step(empty_cell, game.current_player)
+            self.make_step(empty_cell, game.current_player, game)
         game.check_is_someone_winner()
 
     def check_is_king(self, game_field, is_cut_now):
