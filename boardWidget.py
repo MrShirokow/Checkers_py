@@ -115,31 +115,39 @@ class BoardWidget(QFrame):
         max_len = 0
         for checker in self.current_player.checkers:
             checker.find_longest_cut(None, self.game_field, result_positions, self.current_player, checker)
-            way = []
             for list in checker.positions:
                 if len(list) > max_len:
                     max_len = len(list)
-                for c in list:
-                    c.position = True
-                    if c not in way:
-                        way.append(c)
+
+        for checker in self.current_player.checkers:
+            way = []
+            for list in checker.positions:
+                if len(list) == max_len:
+                    for c in list:
+                        c.position = True
+                        if c not in way:
+                            way.append(c)
             checker.positions = way
             if len(checker.positions) > 0:
                 checker.is_walking = True
                 self.walking_checkers.append(checker)
+            # else:
+            #     for c in checker.positions:
+            #         c.position = False
+            #     checker.positions = []
 
-        if len(self.walking_checkers) > 1:
-            # max_len = len(max(self.walking_checkers, key=lambda checker: len(checker.positions)).positions)
-            result_walking_checkers = []
-            for checker in self.walking_checkers:
-                if len(checker.positions) < max_len:
-                    checker.is_walking = False
-                    for c in checker.positions:
-                        c.position = False
-                    checker.positions = []
-                else:
-                    result_walking_checkers.append(checker)
-            self.walking_checkers = result_walking_checkers
+        # if len(self.walking_checkers) > 1:
+        #     # max_len = len(max(self.walking_checkers, key=lambda checker: len(checker.positions)).positions)
+        #     result_walking_checkers = []
+        #     for checker in self.walking_checkers:
+        #         if len(checker.positions) < max_len:
+        #             checker.is_walking = False
+        #             for c in checker.positions:
+        #                 c.position = False
+        #             checker.positions = []
+        #         else:
+        #             result_walking_checkers.append(checker)
+        #     self.walking_checkers = result_walking_checkers
 
         if len(self.walking_checkers) == 0:
             for checker in self.current_player.checkers:
@@ -159,6 +167,9 @@ class BoardWidget(QFrame):
             positions = self.game_field.field[checked_x][checked_y].find_positions_after_cut(previous_cell,
                                                                                              self.game_field,
                                                                                              self.current_player)
+            if len(self.game_field.field[self.chosen_x][self.chosen_y].positions) == 0:
+                self.game_field.field[self.chosen_x][self.chosen_y].positions = positions
+
             if len(positions) == 0:
                 self.current_player.is_complete = True
                 self.game_field.field[self.chosen_x][self.chosen_y].is_chosen = False
