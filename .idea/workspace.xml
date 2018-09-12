@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae6edccd-f453-4b88-8486-904f88f3312d" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boardWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/boardWidget.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/load_game.txt" beforeDir="false" afterPath="$PROJECT_DIR$/load_game.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/startMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/startMenu.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -13,12 +16,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="boardWidget.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="boardWidget.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/boardWidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1585">
-              <caret line="101" column="10" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="10" />
+            <state relative-caret-position="250">
+              <caret line="136" column="35" selection-start-line="136" selection-start-column="35" selection-end-line="136" selection-end-column="35" />
               <folding>
+                <element signature="n#!!doc" />
                 <element signature="e#46#80#0" expanded="true" />
               </folding>
             </state>
@@ -28,20 +32,23 @@
       <file leaf-file-name="cell.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/cell.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3459">
-              <caret line="197" column="26" selection-start-line="197" selection-start-column="26" selection-end-line="197" selection-end-column="26" />
+            <state relative-caret-position="-252">
+              <caret line="2" selection-start-line="2" selection-end-line="2" />
               <folding>
-                <element signature="e#46#80#0" expanded="true" />
+                <element signature="n#!!doc" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="startMenu.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="startMenu.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/startMenu.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="171" column="16" selection-start-line="171" selection-start-column="16" selection-end-line="171" selection-end-column="16" />
+            <state relative-caret-position="186">
+              <caret line="50" column="58" lean-forward="true" selection-start-line="50" selection-start-column="58" selection-end-line="50" selection-end-column="58" />
+              <folding>
+                <element signature="n#!!doc" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -58,7 +65,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>authorEdit</find>
-      <find />
+      <find>(USER32.GetSystemMetrics(1) - 100) // int(FIELD_DIMENSION)</find>
       <find>qbtn</find>
       <find>should</find>
       <find>di</find>
@@ -154,14 +161,14 @@
         <option value="$PROJECT_DIR$/field.py" />
         <option value="$PROJECT_DIR$/player.py" />
         <option value="$PROJECT_DIR$/cell.py" />
-        <option value="$PROJECT_DIR$/boardWidget.py" />
         <option value="$PROJECT_DIR$/startMenu.py" />
+        <option value="$PROJECT_DIR$/boardWidget.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-10" />
-    <option name="y" value="7" />
+    <option name="y" value="6" />
     <option name="width" value="1940" />
     <option name="height" value="1050" />
   </component>
@@ -170,7 +177,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -182,6 +188,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -199,7 +206,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.tests">
+  <component name="RunManager" selected="Python.startMenu">
     <configuration name="StartMenu" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="py" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -299,9 +306,9 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.tests" />
         <item itemvalue="Python.startMenu" />
         <item itemvalue="Python.StartMenu" />
+        <item itemvalue="Python.tests" />
         <item itemvalue="Python.first_lesson" />
         <item itemvalue="Python.test" />
       </list>
@@ -354,21 +361,21 @@
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.2538004" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="10" weight="0.32905984" />
-      <window_info anchor="bottom" id="Version Control" order="3" show_stripe_button="false" />
       <window_info anchor="bottom" id="Run" order="6" sideWeight="0.4986979" visible="true" weight="0.38746437" />
-      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Find" order="5" />
+      <window_info anchor="bottom" id="Python Console" order="0" weight="0.32905984" />
       <window_info anchor="bottom" id="Debug" order="7" weight="0.3988604" />
       <window_info anchor="bottom" id="Terminal" order="1" weight="0.32905984" />
       <window_info anchor="bottom" id="Event Log" order="2" sideWeight="0.50130206" side_tool="true" weight="0.32965517" />
-      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" order="3" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Message" order="4" />
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info anchor="bottom" id="Find" order="5" />
-      <window_info anchor="bottom" id="Python Console" order="0" weight="0.32905984" />
     </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -383,17 +390,15 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="94" />
+      <option name="time" value="102" />
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="self.walking_checkers" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/player.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/field.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -544,43 +549,48 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../bot/bot.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/load_game.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1665" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/boardWidget.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36-32/Lib/codecs.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1585">
-          <caret line="101" column="10" selection-start-line="101" selection-start-column="10" selection-end-line="101" selection-end-column="10" />
+        <state relative-caret-position="124">
+          <caret line="308" selection-start-line="308" selection-end-line="308" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/startMenu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="50" column="58" lean-forward="true" selection-start-line="50" selection-start-column="58" selection-end-line="50" selection-end-column="58" />
           <folding>
-            <element signature="e#46#80#0" expanded="true" />
+            <element signature="n#!!doc" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/cell.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3459">
-          <caret line="197" column="26" selection-start-line="197" selection-start-column="26" selection-end-line="197" selection-end-column="26" />
+        <state relative-caret-position="-252">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
           <folding>
-            <element signature="e#46#80#0" expanded="true" />
+            <element signature="n#!!doc" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/startMenu.py">
+    <entry file="file://$PROJECT_DIR$/boardWidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="171" column="16" selection-start-line="171" selection-start-column="16" selection-end-line="171" selection-end-column="16" />
+        <state relative-caret-position="250">
+          <caret line="136" column="35" selection-start-line="136" selection-start-column="35" selection-end-line="136" selection-end-column="35" />
+          <folding>
+            <element signature="n#!!doc" />
+            <element signature="e#46#80#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

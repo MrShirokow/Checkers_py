@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-
-
 import sys
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon, QColor
@@ -11,7 +9,6 @@ from constants import CHECKER_WHITE_COLOR, CHECKER_BLACK_COLOR
 
 
 class StartMenu(QMainWindow):
-
     def __init__(self):
         super(StartMenu, self).__init__()
         self.game_mode = None
@@ -24,26 +21,22 @@ class StartMenu(QMainWindow):
         dimension_label.move(30, 30)
         self.dimension_edit = QLineEdit(self)
         self.dimension_edit.move(30, 55)
-        game_mod_label = QLabel('Choose game mode: ', self)
-        game_mod_label.adjustSize()
-        game_mod_label.move(320, 30)
+        game_mode_label = QLabel('Choose game mode: ', self)
+        game_mode_label.adjustSize()
+        game_mode_label.move(320, 30)
         self.game_mode_box = QComboBox(self)
         self.game_mode_box.addItem('PvP')
         self.game_mode_box.addItem('PvE')
         self.game_mode_box.move(320, 55)
         self.game_mode_box.activated[str].connect(self.set_game_mode)
-        game_mod_label = QLabel('Choose start player color: ', self)
-        game_mod_label.adjustSize()
-        game_mod_label.move(150, 30)
+        game_mode_label = QLabel('Choose start player color: ', self)
+        game_mode_label.adjustSize()
+        game_mode_label.move(150, 30)
         self.start_player_color_box = QComboBox(self)
         self.start_player_color_box.addItem('White')
         self.start_player_color_box.addItem('Black')
         self.start_player_color_box.move(170, 55)
         self.start_player_color_box.activated[str].connect(self.set_start_player_color)
-        # checker_kind = QLabel('Choose checker kind:', self)
-        # checker_kind.setGeometry(200, 30, 150, dimension_label.geometry().height())
-        # self.checker_kind_box = QComboBox(self)
-        # self.checker_kind_box.addItem('usual')
         start_btn = QPushButton("Start game", self)
         start_btn.clicked.connect(self.start_game)
         start_btn.move(100, 150)
@@ -59,9 +52,12 @@ class StartMenu(QMainWindow):
         self.setWindowTitle('Start menu')
         self.setFixedSize(self.size())
 
-    def set_start_player_color(self, text):
+    def set_start_player_color(self, color_text):
         colors = {'White': CHECKER_WHITE_COLOR, 'Black': CHECKER_BLACK_COLOR}
-        self.really_player_color = colors[text]
+        try:
+            self.really_player_color = colors[color_text]
+        except KeyError:
+            pass
 
     def set_game_mode(self, text):
         self.game_mode = text
