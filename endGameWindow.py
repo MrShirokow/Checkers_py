@@ -19,21 +19,21 @@ class EndGameWindow(QWidget):
         exit_btn = QPushButton('Exit', self)
         exit_btn.clicked.connect(qApp.quit)
         exit_btn.move(300, 150)
+        palette = self.palette()
+        palette.setColor(self.backgroundRole(), Qt.white)
         self.setGeometry(300, 300, 500, 200)
         self.setAutoFillBackground(True)
-        p = self.palette()
-        p.setColor(self.backgroundRole(), Qt.black)
-        self.setPalette(p)
+        self.setPalette(palette)
         self.setWindowIcon(QIcon('resources/checker.png'))
         self.setWindowTitle('Result')
         self.setFixedSize(self.size())
 
-    def paintEvent(self, QPaintEvent):
+    def paintEvent(self, q_paint_event):
         qp = QPainter()
         qp.begin(self)
-        qp.setPen(QColor(0, 255, 0))
+        qp.setPen(QColor(0, 0, 0))
         qp.setFont(QFont('Decorative', 20))
-        qp.drawText(QPaintEvent.rect(), Qt.AlignCenter, self.result_text)
+        qp.drawText(q_paint_event.rect(), Qt.AlignCenter, self.result_text)
         qp.end()
 
     def play_again(self):

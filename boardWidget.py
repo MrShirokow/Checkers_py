@@ -54,17 +54,17 @@ class BoardWidget(QFrame):
         self.win_width = win_width
         self.setGeometry(300, 100, self.win_width, self.win_width)
 
-    def paintEvent(self, e):
-        qp = QPainter()
-        qp.begin(self)
-        self.main(qp)
+    def paintEvent(self, q_paint_event):
+        qpainter = QPainter()
+        qpainter.begin(self)
+        self.main(qpainter)
         self.update()
-        qp.end()
+        qpainter.end()
         if self.is_black_winner or self.is_white_winner:
             self.show_result_window()
 
-    def main(self, qp):
-        self.game_field.draw_field(qp)
+    def main(self, qpainter):
+        self.game_field.draw_field(qpainter)
         self.players = {self.game_field.white_player: self.game_field.black_player,
                         self.game_field.black_player: self.game_field.white_player}
 
@@ -115,15 +115,13 @@ class BoardWidget(QFrame):
         max_len = 0
         for checker in self.current_player.checkers:
             checker.find_longest_cut(None, self.game_field, result_positions, self.current_player, checker)
-            for list in checker.positions:
-                if len(list) > max_len:
-                    max_len = len(list)
+            current_len = max(len(list) for list in checker.positions)
+            max_len = max(current_len, max_len)
         for checker in self.current_player.checkers:
             way = []
             if max_len != 0:
                 for list in checker.positions:
                     if len(list) == max_len:
-                        list[0].position = True
                         if list[0] not in way:
                             way.append(list[0])
             checker.positions = way
@@ -153,15 +151,12 @@ class BoardWidget(QFrame):
                                                                                  self.current_player,
                                                                                  self.game_field.field[
                                                                                      self.chosen_x][self.chosen_y])
-            max_len = 0
-            for list in self.game_field.field[self.chosen_x][self.chosen_y].positions:
-                if len(list) > max_len:
-                    max_len = len(list)
+
+            max_len = max(len(list) for list in self.game_field.field[self.chosen_x][self.chosen_y].positions)
             way = []
             if max_len != 0:
                 for list in self.game_field.field[self.chosen_x][self.chosen_y].positions:
                     if len(list) == max_len:
-                        list[0].position = True
                         if list[0] not in way:
                             way.append(list[0])
             self.game_field.field[self.chosen_x][self.chosen_y].positions = way
@@ -190,7 +185,6 @@ class BoardWidget(QFrame):
         if not self.is_cut_now:
             for i in range(self.field_dimension):
                 for j in range(self.field_dimension):
-                    self.game_field.field[i][j].position = False
                     self.game_field.field[i][j].is_walking = False
                     self.game_field.field[i][j].positions = []
                     self.game_field.field[i][j].is_chosen = False

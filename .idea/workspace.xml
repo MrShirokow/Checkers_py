@@ -4,7 +4,9 @@
     <list default="true" id="ae6edccd-f453-4b88-8486-904f88f3312d" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/boardWidget.py" beforeDir="false" afterPath="$PROJECT_DIR$/boardWidget.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/startMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/startMenu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cell.py" beforeDir="false" afterPath="$PROJECT_DIR$/cell.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endGameWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/endGameWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/start.bat" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,21 +20,12 @@
       <file leaf-file-name="boardWidget.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/boardWidget.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="164" column="40" lean-forward="true" selection-start-line="164" selection-start-column="40" selection-end-line="164" selection-end-column="40" />
+            <state relative-caret-position="198">
+              <caret line="138" column="45" lean-forward="true" selection-start-line="138" selection-start-column="45" selection-end-line="138" selection-end-column="45" />
               <folding>
                 <element signature="n#!!doc" />
                 <element signature="e#46#80#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="cell.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/cell.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="32" column="107" lean-forward="true" selection-start-line="32" selection-start-column="107" selection-end-line="32" selection-end-column="107" />
             </state>
           </provider>
         </entry>
@@ -48,7 +41,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>(USER32.GetSystemMetrics(1) - 100) // int(FIELD_DIMENSION)</find>
       <find>qbtn</find>
       <find>should</find>
       <find>di</find>
@@ -78,6 +70,7 @@
       <find>positions</find>
       <find>make_step</find>
       <find>self.walking</find>
+      <find>position</find>
     </findStrings>
     <replaceStrings>
       <replace>make_move</replace>
@@ -146,9 +139,10 @@
         <option value="$PROJECT_DIR$/player.py" />
         <option value="$USER_HOME$/Downloads/client.py" />
         <option value="$PROJECT_DIR$/board.py" />
-        <option value="$PROJECT_DIR$/cell.py" />
         <option value="$PROJECT_DIR$/startMenu.py" />
+        <option value="$PROJECT_DIR$/endGameWindow.py" />
         <option value="$PROJECT_DIR$/boardWidget.py" />
+        <option value="$PROJECT_DIR$/cell.py" />
       </list>
     </option>
   </component>
@@ -506,13 +500,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/endGameWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-68">
-          <caret line="24" column="30" selection-start-line="24" selection-start-column="30" selection-end-line="24" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/constants.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
@@ -551,17 +538,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/endGameWindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/cell.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="32" column="107" lean-forward="true" selection-start-line="32" selection-start-column="107" selection-end-line="32" selection-end-column="107" />
+        <state relative-caret-position="112">
+          <caret line="217" column="74" lean-forward="true" selection-start-line="217" selection-start-column="74" selection-end-line="217" selection-end-column="74" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/boardWidget.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="164" column="40" lean-forward="true" selection-start-line="164" selection-start-column="40" selection-end-line="164" selection-end-column="40" />
+        <state relative-caret-position="198">
+          <caret line="138" column="45" lean-forward="true" selection-start-line="138" selection-start-column="45" selection-end-line="138" selection-end-column="45" />
           <folding>
             <element signature="n#!!doc" />
             <element signature="e#46#80#0" expanded="true" />

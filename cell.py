@@ -14,7 +14,6 @@ class Cell():
         self.y = y
         self.checker = checker
         self.checker_color = checker_color
-        self.position = False
         self.cell_color = cell_color
         self.positions = []
         self.field_dimension = field_dimension
@@ -25,7 +24,7 @@ class Cell():
         self.rect = QRect(self.x * cell_length, self.y * cell_length, cell_length, cell_length)
 
     def __str__(self):
-        return 'class CELL: ({}, {})'.format(self.x, self.y)
+        return "{} {}".format(self.x, self.y)
 
     def is_in_borders(self, x, y):
         return 0 <= x <= self.field_dimension - 1 and 0 <= y <= self.field_dimension - 1
@@ -219,12 +218,6 @@ class Cell():
                                  self.cell_length - self.cell_length // 2)
         if self.is_walking:
             brush = QBrush(CHOSE_COLOR)
-            brush.setStyle(Qt.DiagCrossPattern)
-            qPainter.setBrush(brush)
-            qPainter.drawRect(self.rect)
-
-        if self.position:
-            brush = QBrush(QColor(255, 255, 0))
             brush.setStyle(Qt.DiagCrossPattern)
             qPainter.setBrush(brush)
             qPainter.drawRect(self.rect)
