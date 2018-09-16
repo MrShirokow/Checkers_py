@@ -12,15 +12,19 @@ class StartMenu(QMainWindow):
     def __init__(self):
         super(StartMenu, self).__init__()
         self.game_mode = None
+        self.field_dimension = None
         self.really_player_color = None
         self.initUI()
 
     def initUI(self):
-        dimension_label = QLabel('Enter dimension: ', self)
+        dimension_label = QLabel('Choose dimension: ', self)
         dimension_label.adjustSize()
         dimension_label.move(30, 30)
-        self.dimension_edit = QLineEdit(self)
-        self.dimension_edit.move(30, 55)
+        self.dimension_box = QComboBox(self)
+        self.dimension_box.move(30, 55)
+        dimensions = [str(x) for x in range(6, 51) if x % 2 == 0]
+        self.dimension_box.addItems(dimensions)
+        self.dimension_box.activated[str].connect(self.set_dimension)
         game_mode_label = QLabel('Choose game mode: ', self)
         game_mode_label.adjustSize()
         game_mode_label.move(320, 30)
@@ -59,34 +63,32 @@ class StartMenu(QMainWindow):
         except KeyError:
             pass
 
-    def set_game_mode(self, text):
-        self.game_mode = text
+    def set_game_mode(self, game_mode):
+        self.game_mode = game_mode
+
+    def set_dimension(self, dimension):
+        self.field_dimension = int(dimension)
 
     def start_game(self):
-        field_dimension = self.dimension_edit.text()
         self.msgBox = QMessageBox()
         self.msgBox.setWindowTitle('Attention!')
         self.msgBox.setWindowIcon(QIcon('resources/attention.png'))
         self.msgBox.setIcon(QMessageBox.Information)
-        try:
-            field_dimension = int(field_dimension)
-            if self.game_mode is None:
-                self.msgBox.setText('Choose game mode!')
-                self.msgBox.exec()
-            elif self.really_player_color is None:
-                self.msgBox.setText('Choose start player color!')
-                self.msgBox.exec()
-            elif field_dimension >= 4 and field_dimension <= 50 and field_dimension % 2 == 0:
-                self.close()
-                self.main_window = Board(field_dimension, white_set=set(), black_set=set(),
-                                         game_mode=self.game_mode, really_player_color=self.really_player_color)
-                self.main_window.show()
-            else:
-                self.msgBox.setText("Dimension should be even number and more than 3 and less than 51.")
-                self.msgBox.exec()
-        except:
-            self.msgBox.setText("Dimension should be integer number.")
+        if self.game_mode is None:
+            self.msgBox.setText('Choose game mode!')
             self.msgBox.exec()
+        elif self.really_player_color is None:
+            self.msgBox.setText('Choose start player color!')
+            self.msgBox.exec()
+        elif self.field_dimension is None:
+            self.msgBox.setText("Choose field dimension!")
+            self.msgBox.exec()
+        else:
+            self.close()
+            self.main_window = Board(self.field_dimension, white_set=set(), black_set=set(),
+                                     game_mode=self.game_mode, really_player_color=self.really_player_color)
+            self.main_window.show()
+
 
     def load_game(self):
         with open('load_game.txt', 'r', encoding='utf-8') as f:

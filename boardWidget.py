@@ -120,12 +120,12 @@ class BoardWidget(QFrame):
                     max_len = len(list)
         for checker in self.current_player.checkers:
             way = []
-            for list in checker.positions:
-                if len(list) == max_len:
-                    for c in list:
-                        c.position = True
-                        if c not in way:
-                            way.append(c)
+            if max_len != 0:
+                for list in checker.positions:
+                    if len(list) == max_len:
+                        list[0].position = True
+                        if list[0] not in way:
+                            way.append(list[0])
             checker.positions = way
             if len(checker.positions) > 0:
                 checker.is_walking = True
@@ -158,12 +158,12 @@ class BoardWidget(QFrame):
                 if len(list) > max_len:
                     max_len = len(list)
             way = []
-            for list in self.game_field.field[self.chosen_x][self.chosen_y].positions:
-                if len(list) == max_len:
-                    for c in list:
-                        c.position = True
-                        if c not in way:
-                            way.append(c)
+            if max_len != 0:
+                for list in self.game_field.field[self.chosen_x][self.chosen_y].positions:
+                    if len(list) == max_len:
+                        list[0].position = True
+                        if list[0] not in way:
+                            way.append(list[0])
             self.game_field.field[self.chosen_x][self.chosen_y].positions = way
             if len(self.game_field.field[checked_x][checked_y].positions) == 0:
                 self.current_player.is_complete = True
