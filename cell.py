@@ -30,7 +30,9 @@ class Cell():
         return 0 <= x <= self.field_dimension - 1 and 0 <= y <= self.field_dimension - 1
 
     def find_longest_cut(self, previous_cell, game_field, result_positions, current_player, start_checker):
-        positions = self.find_positions_after_cut(previous_cell, game_field, current_player,
+        positions = []
+        if self not in result_positions:
+            positions = self.find_positions_after_cut(previous_cell, game_field, current_player,
                                                   is_king=start_checker.is_king)
         if positions == []:
             if len(start_checker.positions) > 0:

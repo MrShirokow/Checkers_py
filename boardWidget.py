@@ -31,8 +31,8 @@ class BoardWidget(QFrame):
         self.black_set = black_set
         self.board = board
         self.timer = QTimer()
-        white_player = Player(CHECKER_WHITE_COLOR, True, self.white_set)
-        black_player = Player(CHECKER_BLACK_COLOR, True, self.black_set)
+        white_player = Player(CHECKER_WHITE_COLOR, False, self.white_set)
+        black_player = Player(CHECKER_BLACK_COLOR, False, self.black_set)
         self.game_field = Field(white_player, black_player, field_dimension, self.cell_length, cells_for_load)
         if current_player_color is None:
             self.current_player = self.game_field.white_player
@@ -55,16 +55,16 @@ class BoardWidget(QFrame):
         self.setGeometry(300, 100, self.win_width, self.win_width)
 
     def paintEvent(self, q_paint_event):
-        qpainter = QPainter()
-        qpainter.begin(self)
-        self.main(qpainter)
+        qPainter = QPainter()
+        qPainter.begin(self)
+        self.main(qPainter)
         self.update()
-        qpainter.end()
+        qPainter.end()
         if self.is_black_winner or self.is_white_winner:
             self.show_result_window()
 
-    def main(self, qpainter):
-        self.game_field.draw_field(qpainter)
+    def main(self, qPainter):
+        self.game_field.draw_field(qPainter)
         self.players = {self.game_field.white_player: self.game_field.black_player,
                         self.game_field.black_player: self.game_field.white_player}
 
