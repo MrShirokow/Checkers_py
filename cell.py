@@ -219,7 +219,7 @@ class Cell():
                                  self.cell_length - self.cell_length // 2,
                                  self.cell_length - self.cell_length // 2)
         if self.is_walking:
-            brush = QBrush(CHOSE_COLOR)
+            brush = QBrush(WALKING_COLOR)
             brush.setStyle(Qt.DiagCrossPattern)
             qPainter.setBrush(brush)
             qPainter.drawRect(self.rect)

@@ -31,8 +31,8 @@ class BoardWidget(QFrame):
         self.black_set = black_set
         self.board = board
         self.timer = QTimer()
-        white_player = Player(CHECKER_WHITE_COLOR, False, self.white_set)
-        black_player = Player(CHECKER_BLACK_COLOR, False, self.black_set)
+        white_player = Player(CHECKER_WHITE_COLOR, True, self.white_set)
+        black_player = Player(CHECKER_BLACK_COLOR, True, self.black_set)
         self.game_field = Field(white_player, black_player, field_dimension, self.cell_length, cells_for_load)
         if current_player_color is None:
             self.current_player = self.game_field.white_player
