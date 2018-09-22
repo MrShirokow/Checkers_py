@@ -190,7 +190,8 @@ class BoardWidget(QFrame):
                     self.game_field.field[i][j].is_chosen = False
 
         other_player = self.players[self.current_player]
-        if self.current_player.is_really_player:
+        if self.current_player.is_really_player or not (
+                self.current_player.is_really_player and other_player.is_really_player):
             self.timer.setSingleShot(True)
             self.timer.start(600)
         self.current_player = other_player

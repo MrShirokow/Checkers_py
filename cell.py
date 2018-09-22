@@ -23,16 +23,11 @@ class Cell():
         self.is_chosen = is_chosen
         self.rect = QRect(self.x * cell_length, self.y * cell_length, cell_length, cell_length)
 
-    def __str__(self):
-        return "{} {}".format(self.x, self.y)
-
     def is_in_borders(self, x, y):
         return 0 <= x <= self.field_dimension - 1 and 0 <= y <= self.field_dimension - 1
 
     def find_longest_cut(self, previous_cell, game_field, result_positions, current_player, start_checker):
-        positions = []
-        if self not in result_positions:
-            positions = self.find_positions_after_cut(previous_cell, game_field, current_player,
+        positions = self.find_positions_after_cut(previous_cell, game_field, current_player,
                                                   is_king=start_checker.is_king)
         if positions == []:
             if len(start_checker.positions) > 0:

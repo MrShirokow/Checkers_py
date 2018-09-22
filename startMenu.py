@@ -61,13 +61,18 @@ class StartMenu(QMainWindow):
         try:
             self.really_player_color = colors[color_text]
         except KeyError:
-            pass
+            raise KeyError("Error color!")
 
     def set_game_mode(self, game_mode):
         self.game_mode = game_mode
 
     def set_dimension(self, dimension):
-        self.field_dimension = int(dimension)
+        try:
+            self.field_dimension = int(dimension)
+        except TypeError:
+            raise TypeError('This is error type!')
+        except ValueError:
+            raise ValueError("This is error value!")
 
     def start_game(self):
         self.msgBox = QMessageBox()
@@ -88,7 +93,6 @@ class StartMenu(QMainWindow):
             self.main_window = Board(self.field_dimension, white_set=set(), black_set=set(),
                                      game_mode=self.game_mode, really_player_color=self.really_player_color)
             self.main_window.show()
-
 
     def load_game(self):
         with open('load_game.txt', 'r', encoding='utf-8') as f:
@@ -160,14 +164,14 @@ class StartMenu(QMainWindow):
 
     def get_value(self, string_value, dict):
         try:
+            if string_value in dict.keys():
+                return dict[string_value]
             value = int(string_value)
             return value
         except ValueError:
-            pass
-        try:
-            return dict[string_value]
-        except KeyError:
-            pass
+            raise ValueError('This is error value!')
+        except TypeError:
+            raise TypeError('This is error type!')
 
 
 if __name__ == "__main__":

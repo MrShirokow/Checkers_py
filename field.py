@@ -76,8 +76,7 @@ class Field:
 
     def draw_field(self, qp):
         """
-        Метод отрисовывает поле.
-        :return:
+        Method draws a field.
         """
         for field_x in range(self.field_dimension):
             for field_y in range(self.field_dimension):
@@ -85,8 +84,7 @@ class Field:
 
     def create_king_cells(self):
         """
-        Метод возвращает клетки, при переходе на которые шашка становится дамкой.
-        :return:
+        Method returns cells that make a checker by a king.
         """
         kings_black_checkers = []
         kings_white_checkers = []
