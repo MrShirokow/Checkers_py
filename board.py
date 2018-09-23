@@ -3,9 +3,9 @@
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QAction, qApp
-
 from boardWidget import BoardWidget
-from constants import USER32
+from constants import USER32, SCRIPT_DIR
+from os import path
 
 
 class Board(QMainWindow):
@@ -33,9 +33,10 @@ class Board(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        save_game_act = QAction(QIcon('resources/save.png'), 'Save game', self)
+        resources = path.join(SCRIPT_DIR, 'resources')
+        save_game_act = QAction(QIcon(path.join(resources, 'save.png')), 'Save game', self)
         save_game_act.triggered.connect(self.save_game)
-        exit_act = QAction(QIcon('resources/exit.png'), 'Exit', self)
+        exit_act = QAction(QIcon(path.join(resources, 'exit.png')), 'Exit', self)
         exit_act.triggered.connect(qApp.quit)
 
         menuBar = self.menuBar()
@@ -53,7 +54,7 @@ class Board(QMainWindow):
         self.setGeometry(300, 50, self.win_width, self.win_height + 17 * menuBar.geometry().height() / 20)
         self.setCentralWidget(self.board_widget)
         self.setWindowTitle('Checkers')
-        self.setWindowIcon(QIcon('resources/checker.png'))
+        self.setWindowIcon(QIcon(path.join(resources, 'checker.png')))
         self.setFixedSize(self.size())
 
     def save_game(self):

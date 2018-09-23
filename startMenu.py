@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import sys
+from os import path
 from PyQt5 import QtCore
 from PyQt5.QtGui import QIcon, QColor
 from PyQt5.QtWidgets import QLabel, QLineEdit, QApplication, QMainWindow, QPushButton, QMessageBox, qApp, QComboBox
 from board import Board
-from constants import CHECKER_WHITE_COLOR, CHECKER_BLACK_COLOR
+from constants import CHECKER_WHITE_COLOR, CHECKER_BLACK_COLOR, SCRIPT_DIR
 
 
 class StartMenu(QMainWindow):
@@ -52,7 +53,8 @@ class StartMenu(QMainWindow):
         exit_btn.move(300, 150)
 
         self.setGeometry(300, 300, 500, 200)
-        self.setWindowIcon(QIcon('resources/checker.png'))
+        resources = path.join(SCRIPT_DIR, 'resources')
+        self.setWindowIcon(QIcon(path.join(resources, 'checker.png')))
         self.setWindowTitle('Start menu')
         self.setFixedSize(self.size())
 
@@ -74,33 +76,38 @@ class StartMenu(QMainWindow):
         except ValueError:
             raise ValueError("This is error value!")
 
-    def start_game(self):
+    def start_game(self, run_in_test=False):
         self.msgBox = QMessageBox()
         self.msgBox.setWindowTitle('Attention!')
-        self.msgBox.setWindowIcon(QIcon('resources/attention.png'))
+        attention_path = path.join(SCRIPT_DIR, 'resources', 'attention.png')
+        self.msgBox.setWindowIcon(QIcon(attention_path))
         self.msgBox.setIcon(QMessageBox.Information)
         if self.game_mode is None:
             self.msgBox.setText('Choose game mode!')
-            self.msgBox.exec()
+            if not run_in_test:
+                self.msgBox.exec()
         elif self.really_player_color is None:
             self.msgBox.setText('Choose start player color!')
-            self.msgBox.exec()
+            if not run_in_test:
+                self.msgBox.exec()
         elif self.field_dimension is None:
             self.msgBox.setText("Choose field dimension!")
-            self.msgBox.exec()
+            if not run_in_test:
+                self.msgBox.exec()
         else:
             self.close()
             self.main_window = Board(self.field_dimension, white_set=set(), black_set=set(),
                                      game_mode=self.game_mode, really_player_color=self.really_player_color)
             self.main_window.show()
 
-    def load_game(self):
+    def load_game(self, run_in_test=False):
         with open('load_game.txt', 'r', encoding='utf-8') as f:
             text = f.read()
         if text == '':
             self.mesBox = QMessageBox()
             self.mesBox.setWindowTitle('Attention!')
-            self.mesBox.setWindowIcon(QIcon('resources/attention.png'))
+            attention_path = path.join(SCRIPT_DIR, 'resources', 'attention.png')
+            self.mesBox.setWindowIcon(QIcon(attention_path))
             self.mesBox.setIcon(QMessageBox.Information)
             self.mesBox.setText("No saved game.")
             self.mesBox.exec()
@@ -160,7 +167,8 @@ class StartMenu(QMainWindow):
             self.board = Board(field_dimension, current_player_color, is_cut_now,
                                cells_for_load, white_set, black_set,
                                chosen_x, chosen_y, mouse_x, mouse_y, game_mode, really_player_color)
-            self.board.show()
+            if not run_in_test:
+                self.board.show()
 
     def get_value(self, string_value, dict):
         try:

@@ -16,6 +16,8 @@ class Cell():
         self.checker_color = checker_color
         self.cell_color = cell_color
         self.positions = []
+        self.visited = False
+        self.is_cut_down = False
         self.field_dimension = field_dimension
         self.cell_length = cell_length
         self.is_walking = False
@@ -27,8 +29,10 @@ class Cell():
         return 0 <= x <= self.field_dimension - 1 and 0 <= y <= self.field_dimension - 1
 
     def find_longest_cut(self, previous_cell, game_field, result_positions, current_player, start_checker):
-        positions = self.find_positions_after_cut(previous_cell, game_field, current_player,
-                                                  is_king=start_checker.is_king)
+        positions = []
+        if not self.visited:
+            positions = self.find_positions_after_cut(previous_cell, game_field, current_player,
+                                                      is_king=start_checker.is_king)
         if positions == []:
             if len(start_checker.positions) > 0:
                 if len(result_positions) > len(start_checker.positions[0]):
@@ -40,9 +44,16 @@ class Cell():
                 start_checker.positions.append(copy(result_positions))
         else:
             for cell in positions:
-                result_positions.append(cell)
-                cell.find_longest_cut(self, game_field, result_positions, current_player, start_checker)
-                result_positions.remove(cell)
+                enemy = self.get_enemies(cell, game_field)[0]
+                if type(enemy) is Cell:
+                    if not enemy.is_cut_down:
+                        enemy.is_cut_down = True
+                        result_positions.append(cell)
+                        self.visited = True
+                        cell.find_longest_cut(self, game_field, result_positions, current_player, start_checker)
+                        result_positions.remove(cell)
+                    enemy.is_cut_down = False
+                self.visited = False
 
     def find_positions_after_cut(self, previous_cell, game_field, current_player, is_king=False):
         positions = []
@@ -149,7 +160,7 @@ class Cell():
                     positions.append(game_field.field[self.y + dir_x][self.x + dir_y])
         return positions
 
-    def move(self, empty_cell, current_player, game):
+    def move(self, empty_cell, current_player, walking_checkers):
         self.is_walking = False
         current_player.remove_checker(self)
         empty_cell.checker_color, self.checker_color = self.checker_color, empty_cell.checker_color
@@ -157,8 +168,8 @@ class Cell():
         empty_cell.is_king, self.is_king = self.is_king, empty_cell.is_king
         empty_cell.positions, self.positions = self.positions, empty_cell.positions
         empty_cell.positions.remove(empty_cell)
-        game.walking_checkers.remove(self)
-        game.walking_checkers.append(empty_cell)
+        walking_checkers.remove(self)
+        walking_checkers.append(empty_cell)
         current_player.add_checker(empty_cell)
 
     def is_correct_cut(self, empty_cell, game_field):
@@ -191,7 +202,7 @@ class Cell():
             game.game_field.field[game.chosen_x][game.chosen_y].is_chosen = False
             game.chosen_x, game.chosen_y = empty_cell.y, empty_cell.x
             game.game_field.field[game.chosen_x][game.chosen_y].is_chosen = True
-            self.move(empty_cell, game.current_player, game)
+            self.move(empty_cell, game.current_player, game.walking_checkers)
         game.check_is_someone_winner()
 
     def check_is_king(self, game_field, is_cut_now):

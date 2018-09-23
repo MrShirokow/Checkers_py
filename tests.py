@@ -3,7 +3,9 @@ from player import *
 from cell import *
 from field import *
 from PyQt5.QtGui import QPainter
+from PyQt5.QtGui import QBrush, QColor
 from startMenu import *
+from os import path
 
 
 class StartTests(unittest.TestCase):
@@ -185,6 +187,351 @@ class StartTests(unittest.TestCase):
         for pair in walking_checkers:
             self.assertTrue(pair in correct_cells)
         app.quit()
+
+    def test_check_is_someone_winner(self):
+        app = QApplication(sys.argv)
+        start_window = StartMenu()
+        start_window.field_dimension = 10
+        start_window.game_mode = 'PvP'
+        start_window.really_player_color = CHECKER_WHITE_COLOR
+        start_window.main_window = Board(start_window.field_dimension, white_set=set(), black_set=set(),
+                                         game_mode=start_window.game_mode,
+                                         really_player_color=start_window.really_player_color)
+        widget = start_window.main_window.board_widget
+        widget.game_field.white_player.checkers_count = 0
+        widget.check_is_someone_winner()
+        self.assertEqual(True, widget.is_black_winner)
+        widget.game_field.white_player.checkers_count = 1
+        widget.game_field.black_player.checkers_count = 0
+        widget.check_is_someone_winner()
+        self.assertEqual(True, widget.is_white_winner)
+        widget.game_field.white_player.checkers_count = 1
+        widget.game_field.black_player.checkers_count = 1
+        widget.is_white_winner = False
+        widget.is_black_winner = False
+        widget.check_is_someone_winner()
+        self.assertEqual(False, widget.is_white_winner)
+        self.assertEqual(False, widget.is_black_winner)
+        app.quit()
+
+    def test_change_player(self):
+        app = QApplication(sys.argv)
+        start_window = StartMenu()
+        start_window.field_dimension = 10
+        start_window.game_mode = 'PvP'
+        start_window.really_player_color = CHECKER_WHITE_COLOR
+        start_window.main_window = Board(start_window.field_dimension, white_set=set(), black_set=set(),
+                                         game_mode=start_window.game_mode,
+                                         really_player_color=start_window.really_player_color)
+        widget = start_window.main_window.board_widget
+        self.assertEqual(CHECKER_WHITE_COLOR, widget.current_player.color)
+        widget.players = {widget.game_field.white_player: widget.game_field.black_player,
+                          widget.game_field.black_player: widget.game_field.white_player}
+        widget.change_player()
+        self.assertTrue(widget.walking_checkers == [])
+        self.assertEqual(CHECKER_BLACK_COLOR, widget.current_player.color)
+        app.quit()
+
+    def test_is_cut_possible(self):
+        white_player = Player(CHECKER_WHITE_COLOR, True, set())
+        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        dict = {'True': True,
+                'False': False,
+                'None': None}
+        field = Field(white_player, black_player, 10, 50)
+        for_test_dir = path.join(SCRIPT_DIR, 'for_tests')
+        with open(path.join(for_test_dir, 'field_1.txt'), 'r', encoding='utf-8') as f:
+            lines = [line.split('#') for line in f.read().split('\n')]
+        x = y = 0
+        for line in lines:
+            if line[3] == 'None':
+                color = None
+            else:
+                line[3] = line[3].replace('(', '').replace(')', '').split(',')
+                color = QColor(int(line[3][0]), int(line[3][1]), int(line[3][2]))
+            line[4] = line[4].replace('(', '').replace(')', '').split(',')
+            field.field[x][y] = Cell(int(line[0]),
+                                     int(line[1]),
+                                     dict[line[2]],
+                                     color,
+                                     QColor(int(line[4][0]),
+                                            int(line[4][1]),
+                                            int(line[4][2])),
+                                     int(line[5]),
+                                     int(line[6]),
+                                     dict[line[7]],
+                                     dict[line[8]])
+            y += 1
+            if y == field.field_dimension:
+                y = 0
+                x += 1
+        self.assertEqual(True, field.field[0][1].is_correct_cut(field.field[3][4], field))
+        self.assertEqual(False, field.field[0][1].is_correct_cut(field.field[2][3], field))
+        self.assertEqual(False, field.field[0][1].is_correct_cut(field.field[8][7], field))
+        self.assertEqual(False, field.field[6][7].is_correct_cut(field.field[6][7], field))
+        self.assertEqual(True, field.field[0][1].is_correct_cut(field.field[5][6], field))
+
+    def test_is_step_possible(self):
+        white_player = Player(CHECKER_WHITE_COLOR, True, set())
+        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        current_player = white_player
+        field = Field(white_player, black_player, 10, 50)
+        self.assertEqual(False, field.field[0][3].is_step_possible(field.field[5][6], current_player, field))
+        self.assertEqual(True, field.field[6][5].is_step_possible(field.field[5][6], current_player, field))
+        self.assertEqual(False, field.field[9][1].is_step_possible(field.field[8][3], current_player, field))
+        field.field[9][1].is_king = True
+        self.assertEqual(False, field.field[9][1].is_step_possible(field.field[8][3], current_player, field))
+        field.field[6][5].is_king = True
+        self.assertEqual(True, field.field[6][5].is_step_possible(field.field[5][6], current_player, field))
+
+    def test_find_positions_after_step(self):
+        white_player = Player(CHECKER_WHITE_COLOR, True, set())
+        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        dict = {'True': True,
+                'False': False,
+                'None': None}
+        field = Field(white_player, black_player, 10, 50)
+        for_test_dir = path.join(SCRIPT_DIR, 'for_tests')
+        with open(path.join(for_test_dir, 'field_1.txt'), 'r', encoding='utf-8') as f:
+            lines = [line.split('#') for line in f.read().split('\n')]
+        x = y = 0
+        for line in lines:
+            if line[3] == 'None':
+                color = None
+            else:
+                line[3] = line[3].replace('(', '').replace(')', '').split(',')
+                color = QColor(int(line[3][0]), int(line[3][1]), int(line[3][2]))
+            line[4] = line[4].replace('(', '').replace(')', '').split(',')
+            field.field[x][y] = Cell(int(line[0]),
+                                     int(line[1]),
+                                     dict[line[2]],
+                                     color,
+                                     QColor(int(line[4][0]),
+                                            int(line[4][1]),
+                                            int(line[4][2])),
+                                     int(line[5]),
+                                     int(line[6]),
+                                     dict[line[7]],
+                                     dict[line[8]])
+            y += 1
+            if y == field.field_dimension:
+                y = 0
+                x += 1
+        positions = [(c.x, c.y) for c in field.field[0][1].find_positions_after_step(white_player, field)]
+        correct_positions = [(0, 1), (2, 1)]
+        self.assertEqual(correct_positions, positions)
+        positions = [(c.x, c.y) for c in field.field[9][0].find_positions_after_step(white_player, field)]
+        correct_positions = []
+        self.assertEqual(correct_positions, positions)
+        positions = [(c.x, c.y) for c in field.field[3][6].find_positions_after_step(black_player, field)]
+        correct_positions = [(5, 4)]
+        self.assertEqual(correct_positions, positions)
+
+    def test_get_enemies(self):
+        white_player = Player(CHECKER_WHITE_COLOR, True, set())
+        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        dict = {'True': True,
+                'False': False,
+                'None': None}
+        field = Field(white_player, black_player, 10, 50)
+        for_test_dir = path.join(SCRIPT_DIR, 'for_tests')
+        with open(path.join(for_test_dir, 'field_1.txt'), 'r', encoding='utf-8') as f:
+            lines = [line.split('#') for line in f.read().split('\n')]
+        x = y = 0
+        for line in lines:
+            if line[3] == 'None':
+                color = None
+            else:
+                line[3] = line[3].replace('(', '').replace(')', '').split(',')
+                color = QColor(int(line[3][0]), int(line[3][1]), int(line[3][2]))
+            line[4] = line[4].replace('(', '').replace(')', '').split(',')
+            field.field[x][y] = Cell(int(line[0]),
+                                     int(line[1]),
+                                     dict[line[2]],
+                                     color,
+                                     QColor(int(line[4][0]),
+                                            int(line[4][1]),
+                                            int(line[4][2])),
+                                     int(line[5]),
+                                     int(line[6]),
+                                     dict[line[7]],
+                                     dict[line[8]])
+            y += 1
+            if y == field.field_dimension:
+                y = 0
+                x += 1
+        enemies = [(checker.x, checker.y) for checker in field.field[0][1].get_enemies(field.field[4][5], field)]
+        correct_enemies = [(3, 2)]
+        self.assertEqual(correct_enemies, enemies)
+        enemies = field.field[5][0].get_enemies(field.field[7][2], field)
+        correct_enemies = ['Not None']
+        self.assertEqual(correct_enemies, enemies)
+        enemies = [(checker.x, checker.y) for checker in field.field[5][4].get_enemies(field.field[2][7], field)]
+        correct_enemies = [(6, 3)]
+        self.assertEqual(correct_enemies, enemies)
+
+    def test_find_positions_after_cut(self):
+        white_player = Player(CHECKER_WHITE_COLOR, True, set())
+        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        dict = {'True': True,
+                'False': False,
+                'None': None}
+        field = Field(white_player, black_player, 10, 50)
+        for_test_dir = path.join(SCRIPT_DIR, 'for_tests')
+        with open(path.join(for_test_dir, 'field_1.txt'), 'r', encoding='utf-8') as f:
+            lines = [line.split('#') for line in f.read().split('\n')]
+        x = y = 0
+        for line in lines:
+            if line[3] == 'None':
+                color = None
+            else:
+                line[3] = line[3].replace('(', '').replace(')', '').split(',')
+                color = QColor(int(line[3][0]), int(line[3][1]), int(line[3][2]))
+            line[4] = line[4].replace('(', '').replace(')', '').split(',')
+            field.field[x][y] = Cell(int(line[0]),
+                                     int(line[1]),
+                                     dict[line[2]],
+                                     color,
+                                     QColor(int(line[4][0]),
+                                            int(line[4][1]),
+                                            int(line[4][2])),
+                                     int(line[5]),
+                                     int(line[6]),
+                                     dict[line[7]],
+                                     dict[line[8]])
+            y += 1
+            if y == field.field_dimension:
+                y = 0
+                x += 1
+        positions = [(c.x, c.y) for c in field.field[0][1].find_positions_after_cut(None, field, white_player)]
+        correct_position = [(4, 3), (5, 4), (6, 5), (7, 6)]
+        self.assertEqual(correct_position, positions)
+        field.field[5][4].is_king = True
+        positions = [(c.x, c.y) for c in field.field[5][4].find_positions_after_cut(None, field, white_player)]
+        correct_position = [(0, 1), (7, 2), (8, 1)]
+        self.assertEqual(correct_position, positions)
+        positions = [(c.x, c.y) for c in
+                     field.field[5][4].find_positions_after_cut(field.field[4][3], field, white_player)]
+        correct_position = [(7, 2), (8, 1)]
+        self.assertEqual(correct_position, positions)
+
+    def test_find_longest_cut(self):
+        white_player = Player(CHECKER_WHITE_COLOR, True, set())
+        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        dict = {'True': True,
+                'False': False,
+                'None': None}
+        field = Field(white_player, black_player, 10, 50)
+        for_test_dir = path.join(SCRIPT_DIR, 'for_tests')
+        with open(path.join(for_test_dir, 'field_2.txt'), 'r', encoding='utf-8') as f:
+            lines = [line.split('#') for line in f.read().split('\n')]
+        x = y = 0
+        for line in lines:
+            if line[3] == 'None':
+                color = None
+            else:
+                line[3] = line[3].replace('(', '').replace(')', '').split(',')
+                color = QColor(int(line[3][0]), int(line[3][1]), int(line[3][2]))
+            line[4] = line[4].replace('(', '').replace(')', '').split(',')
+            field.field[x][y] = Cell(int(line[0]),
+                                     int(line[1]),
+                                     dict[line[2]],
+                                     color,
+                                     QColor(int(line[4][0]),
+                                            int(line[4][1]),
+                                            int(line[4][2])),
+                                     int(line[5]),
+                                     int(line[6]),
+                                     dict[line[7]],
+                                     dict[line[8]])
+            y += 1
+            if y == field.field_dimension:
+                y = 0
+                x += 1
+        result_position = []
+        field.field[3][0].find_longest_cut(None, field, result_position, white_player, field.field[3][0])
+        result_position = []
+        field.field[0][1].find_longest_cut(None, field, result_position, white_player, field.field[0][1])
+        field.field[7][4].find_longest_cut(None, field, result_position, white_player, field.field[7][4])
+        positions_1 = [(c.x, c.y) for c in field.field[3][0].positions[0]]
+        positions_2 = [(c.x, c.y) for c in field.field[0][1].positions[0]]
+        positions_3 = [(c.x, c.y) for c in field.field[7][4].positions[0]]
+        correct_1 = [(2, 1), (4, 3), (6, 1), (8, 3), (6, 5)]
+        correct_2 = [(6, 5), (8, 3), (6, 1), (4, 3), (2, 5)]
+        correct_3 = []
+        self.assertTrue(len(positions_1) == len(positions_2))
+        self.assertEqual(correct_1, positions_1)
+        self.assertEqual(correct_2, positions_2)
+        self.assertEqual(correct_3, positions_3)
+        field.field[0][1].positions = []
+        field.field[0][1].find_longest_cut(field.field[3][4], field, result_position, white_player, field.field[0][1])
+        self.assertEqual([[]], field.field[0][1].positions)
+
+    def test_move(self):
+        white_player = Player(CHECKER_WHITE_COLOR, True, set())
+        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        dict = {'True': True,
+                'False': False,
+                'None': None}
+        field = Field(white_player, black_player, 10, 50)
+        for_test_dir = path.join(SCRIPT_DIR, 'for_tests')
+        with open(path.join(for_test_dir, 'field_2.txt'), 'r', encoding='utf-8') as f:
+            lines = [line.split('#') for line in f.read().split('\n')]
+        x = y = 0
+        for line in lines:
+            if line[3] == 'None':
+                color = None
+            else:
+                line[3] = line[3].replace('(', '').replace(')', '').split(',')
+                color = QColor(int(line[3][0]), int(line[3][1]), int(line[3][2]))
+            line[4] = line[4].replace('(', '').replace(')', '').split(',')
+            field.field[x][y] = Cell(int(line[0]),
+                                     int(line[1]),
+                                     dict[line[2]],
+                                     color,
+                                     QColor(int(line[4][0]),
+                                            int(line[4][1]),
+                                            int(line[4][2])),
+                                     int(line[5]),
+                                     int(line[6]),
+                                     dict[line[7]],
+                                     dict[line[8]])
+            y += 1
+            if y == field.field_dimension:
+                y = 0
+                x += 1
+        walking_checkers = []
+        test_checker = field.field[6][3]
+        test_checker.positions.append(field.field[5][2])
+        white_player.add_checker(test_checker)
+        walking_checkers.append(test_checker)
+        test_checker.move(field.field[5][2], white_player, walking_checkers)
+        self.assertTrue(test_checker not in walking_checkers)
+        self.assertTrue(not test_checker.is_king)
+        self.assertTrue(test_checker.checker_color is None)
+        self.assertTrue(test_checker.positions == [])
+
+    def test_load_game(self):
+        raised = False
+        try:
+            app = QApplication(sys.argv)
+            start_window = StartMenu()
+            start_window.load_game(run_in_test=True)
+            app.quit()
+        except:
+            raised = True
+        self.assertTrue(not raised)
+
+    def test_start_game(self):
+        raised = False
+        try:
+            app = QApplication(sys.argv)
+            start_window = StartMenu()
+            start_window.start_game(run_in_test=True)
+            app.quit()
+        except:
+            raised = True
+        self.assertTrue(not raised)
 
 
 if __name__ == '__main__':

@@ -3,6 +3,8 @@
 from PyQt5.QtCore import Qt, QRect
 from PyQt5.QtGui import QIcon, QPainter, QColor, QFont
 from PyQt5.QtWidgets import QWidget, QPushButton, qApp, QLabel
+from constants import SCRIPT_DIR
+from os import path
 
 
 class EndGameWindow(QWidget):
@@ -24,7 +26,8 @@ class EndGameWindow(QWidget):
         self.setGeometry(300, 300, 500, 200)
         self.setAutoFillBackground(True)
         self.setPalette(palette)
-        self.setWindowIcon(QIcon('resources/checker.png'))
+        resource_path = path.join(SCRIPT_DIR, 'resources', 'checker.png')
+        self.setWindowIcon(QIcon(resource_path))
         self.setWindowTitle('Result')
         self.setFixedSize(self.size())
 
@@ -36,8 +39,9 @@ class EndGameWindow(QWidget):
         qp.drawText(q_paint_event.rect(), Qt.AlignCenter, self.result_text)
         qp.end()
 
-    def play_again(self):
+    def play_again(self, run_in_test=False):
         from startMenu import StartMenu
         self.start_window = StartMenu()
-        self.start_window.show()
+        if not run_in_test:
+            self.start_window.show()
         self.close()

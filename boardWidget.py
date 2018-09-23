@@ -174,7 +174,7 @@ class BoardWidget(QFrame):
                     self.current_player,
                     self.game_field):
                 self.game_field.field[self.chosen_x][self.chosen_y].move(self.game_field.field[checked_x][checked_y],
-                                                                         self.current_player, self)
+                                                                         self.current_player, self.walking_checkers)
                 self.current_player.is_complete = True
                 self.game_field.field[checked_x][checked_y].check_is_king(self.game_field, self.is_cut_now)
         self.game_field.field[self.chosen_x][self.chosen_y].is_chosen = False
@@ -188,21 +188,23 @@ class BoardWidget(QFrame):
                     self.game_field.field[i][j].is_walking = False
                     self.game_field.field[i][j].positions = []
                     self.game_field.field[i][j].is_chosen = False
+                    self.game_field.field[i][j].visited = False
+                    self.game_field.field[i][j].is_cut_down = False
 
         other_player = self.players[self.current_player]
-        if self.current_player.is_really_player or not (
-                self.current_player.is_really_player and other_player.is_really_player):
+        if self.current_player.is_really_player:
             self.timer.setSingleShot(True)
             self.timer.start(600)
         self.current_player = other_player
 
-    def show_result_window(self):
+    def show_result_window(self, run_in_test=False):
         text = 'White player is winner!'
         if self.is_black_winner:
             text = 'Black player is winner!'
         self.board.close()
         self.end_window = EndGameWindow(text)
-        self.end_window.show()
+        if not run_in_test:
+            self.end_window.show()
 
     def mousePressEvent(self, QMouseEvent):
         self.mouse_x = QMouseEvent.pos().x() // self.cell_length

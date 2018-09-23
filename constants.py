@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import ctypes
-
+from os import path
+from sys import argv
 from PyQt5.QtGui import QColor
 
 USER32 = ctypes.windll.user32
@@ -15,3 +16,4 @@ FRAME_COLOR = QColor(255, 0, 0)
 WALKING_COLOR = QColor(100, 200, 40)
 DIRECTION_COEFFICIENTS = {CHECKER_WHITE_COLOR.getRgb(): 1,
                           CHECKER_BLACK_COLOR.getRgb(): -1}
+SCRIPT_DIR = path.dirname(argv[0])
