@@ -8,6 +8,10 @@ from copy import copy
 
 
 class Cell():
+    """
+    Класс клетки игрового поля.
+    """
+
     def __init__(self, x, y, checker, checker_color, cell_color,
                  field_dimension, cell_length, is_king=False, is_chosen=False):
         self.x = x
@@ -26,9 +30,21 @@ class Cell():
         self.rect = QRect(self.x * cell_length, self.y * cell_length, cell_length, cell_length)
 
     def is_in_borders(self, x, y):
+        """
+        Метод проверяет, находится ли точка (x, y) в пределах поля.
+        """
         return 0 <= x <= self.field_dimension - 1 and 0 <= y <= self.field_dimension - 1
 
     def find_longest_cut(self, previous_cell, game_field, result_positions, current_player, start_checker):
+        """
+        Метод находит самый длинный путь сруба для шашки.
+        previous_cell - клетка, с которой был совершён ход
+        (чтобы исключить проверку направления, по которому шашка уже сделала движение)
+        game_field - игровое поле.
+        result_positions - список для сбора итогового пути.
+        current_player - текущий игрок.
+        start_checker - начальная шашка.
+        """
         positions = []
         if not self.visited:
             positions = self.find_positions_after_cut(previous_cell, game_field, current_player,
@@ -56,6 +72,14 @@ class Cell():
                 self.visited = False
 
     def find_positions_after_cut(self, previous_cell, game_field, current_player, is_king=False):
+        """
+        Метод находит позиции, на которые можно встать после сруба.
+        previous_cell - клетка, с которой был совершён ход
+        (чтобы исключить проверку направления, по которому шашка уже сделала движение)
+        game_field - игровое поле.
+        current_player - текущий игрок.
+        is_king - флаг, говорящий, была ли начальная шашка дамкой.
+        """
         positions = []
         directions = [(1, 1), (1, -1), (-1, -1), (-1, 1)]
         if previous_cell is not None:
@@ -102,6 +126,12 @@ class Cell():
         return positions
 
     def is_step_possible(self, empty_cell, current_player, game_field):
+        """
+        Метод проверяет, возможет ли ход текущий шашки на какую-то выбранную.
+        empty_cell - клетка, на которую планируется делать ход.
+        current_player - текущий игрок.
+        game_field - игровое поле.
+        """
         if self.checker and self.is_king and not empty_cell.checker:
             if fabs(self.x - empty_cell.x) == fabs(self.y - empty_cell.y):
                 enemy_cells = self.get_enemies(empty_cell, game_field)
@@ -113,6 +143,11 @@ class Cell():
                    empty_cell.cell_color == CELL_BLACK_COLOR and not empty_cell.checker
 
     def get_enemies(self, empty_cell, game_field):
+        """
+        Метод находит вражеские шашки между текущий шашкой и какой-то выбранной.
+        empty_cell - клетка, на которую планируется делать ход.
+        game_field - игровое поле.
+        """
         start_x = self.y
         last_x = empty_cell.y
         start_y = self.x
@@ -139,6 +174,11 @@ class Cell():
         return enemy_cells
 
     def find_positions_after_step(self, current_player, game_field):
+        """
+        Метод находит позиции, на которые можно сходить без сруба.
+        current_player - текущий игрок.
+        game_field - игровое поле.
+        """
         positions = []
         directions = [(-1, -1), (-1, 1), (1, -1), (1, 1)]
         if self.checker and self.is_king:
@@ -161,6 +201,12 @@ class Cell():
         return positions
 
     def move(self, empty_cell, current_player, walking_checkers):
+        """
+        Метод меняет две шашки местами.
+        empty_cell - клетка, на которую планируется делать ход.
+        current_player - текущий игрок.
+        walking_checkers - список шашек, которыми может ходить текущий игрок.
+        """
         self.is_walking = False
         current_player.remove_checker(self)
         empty_cell.checker_color, self.checker_color = self.checker_color, empty_cell.checker_color
@@ -173,6 +219,11 @@ class Cell():
         current_player.add_checker(empty_cell)
 
     def is_correct_cut(self, empty_cell, game_field):
+        """
+        Метод проверяет, корректный ли сруб, если сходить на выбранную шашку.
+        empty_cell - клетка, на которую планируется делать ход.
+        game_field - игровое поле.
+        """
         if self.checker and self.is_king and not empty_cell.checker:
             if fabs(self.x - empty_cell.x) == fabs(self.y - empty_cell.y):
                 enemy_cells = self.get_enemies(empty_cell, game_field)
@@ -185,6 +236,12 @@ class Cell():
                game_field.field[x][y].checker_color != self.checker_color
 
     def cut(self, empty_cell, enemy_cells, game):
+        """
+        Метод делает сруб шашки, вставая на выбранную клетку.
+        empty_cell - клетка, на которую планируется делать ход.
+        enemy_cells - вражеские клетки между текущей и выбранной клеткой.
+        game - текущая партия.
+        """
         x = None
         y = None
         if self.checker and self.is_king:
@@ -206,11 +263,19 @@ class Cell():
         game.check_is_someone_winner()
 
     def check_is_king(self, game_field, is_cut_now):
+        """
+        Метод проверяет, не явлется ли дамкой шашка.
+        game_field - игровое поле.
+        is_cut_now - флаг, показывающий, рубит ли сейчас шашка. В случае, если рубит, то дамкой она стать не может.
+        """
         if (self.y, self.x) in game_field.king_checkers[self.checker_color.getRgb()] and not is_cut_now and \
                 game_field.field[self.y][self.x].checker:
             game_field.field[self.y][self.x].is_king = True
 
     def draw_cell(self, qPainter):
+        """
+        Метод отрисовки.
+        """
         qPainter.setBrush(self.cell_color)
         qPainter.drawRect(self.rect)
         if self.checker:

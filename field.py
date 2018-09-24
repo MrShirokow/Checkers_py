@@ -22,6 +22,9 @@ class Field:
         self.king_checkers = self.create_king_cells()
 
     def get_player_by_color(self, color):
+        """
+        Метод возвращает игрока по цвету.
+        """
         if self.white_player.color == color:
             return self.white_player
         return self.black_player
@@ -29,7 +32,6 @@ class Field:
     def create_start_field(self):
         """
         Метод создаёт стартовое поле.
-        :return: стартовое поле игры.
         """
         game_field = [["0"] * self.field_dimension for _ in range(self.field_dimension)]
         x = y = 0
@@ -76,7 +78,7 @@ class Field:
 
     def draw_field(self, qp):
         """
-        Method draws a field.
+        Метод отрисовки.
         """
         for field_x in range(self.field_dimension):
             for field_y in range(self.field_dimension):
@@ -84,7 +86,7 @@ class Field:
 
     def create_king_cells(self):
         """
-        Method returns cells that make a checker by a king.
+        Метод генерирует клетки, при заходе на которые шашка становится дамкой.
         """
         kings_black_checkers = []
         kings_white_checkers = []

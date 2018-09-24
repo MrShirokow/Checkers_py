@@ -20,8 +20,7 @@ class Player:
     def add_checker(self, checker):
         """
         Метод добавляет шашку в список шашек игрока.
-        :param checker: шашка для добавления
-        :return:
+        Параметры: шашка для добавления.
         """
         self.checkers.add(checker)
         self.checkers_count = len(self.checkers)
@@ -29,8 +28,7 @@ class Player:
     def remove_checker(self, checker):
         """
         Метод удаляет шашку из списка шашек игрока.
-        :param checker: шашка для удаления
-        :return:
+        Параметры: шашка для удаления.
         """
         self.checkers.remove(checker)
         self.checkers_count = len(self.checkers)

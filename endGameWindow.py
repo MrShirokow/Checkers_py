@@ -8,7 +8,9 @@ from os import path
 
 
 class EndGameWindow(QWidget):
-
+    """
+    Класс окошка результата игры.
+    """
     def __init__(self, result_text):
         super().__init__()
         self.result_text = result_text
@@ -40,6 +42,12 @@ class EndGameWindow(QWidget):
         qp.end()
 
     def play_again(self, run_in_test=False):
+        """
+        Метод, на который опирается кнопка 'Начать заново'.
+        При нажатии - игры инициализируется заново.
+        Параметр - флаг, который по умолчанию false, за исключением случаев тестирования.
+        (Сделано, чтобы при тестировании не открывались всплывающие окна).
+        """
         from startMenu import StartMenu
         self.start_window = StartMenu()
         if not run_in_test:

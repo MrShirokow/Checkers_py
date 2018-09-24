@@ -14,6 +14,10 @@ from copy import deepcopy
 
 
 class BoardWidget(QFrame):
+    """
+    Класс фрейма, содержащий в себе основную логику игры.
+    """
+
     def __init__(self, board, field_dimension, cell_length, win_width,
                  current_player_color=None, is_cut_now=False,
                  cells_for_load=None, white_set=set(), black_set=set(),
@@ -55,6 +59,9 @@ class BoardWidget(QFrame):
         self.setGeometry(300, 100, self.win_width, self.win_width)
 
     def paintEvent(self, q_paint_event):
+        """
+        Метод отрисовки.
+        """
         qPainter = QPainter()
         qPainter.begin(self)
         self.main(qPainter)
@@ -64,6 +71,9 @@ class BoardWidget(QFrame):
             self.show_result_window()
 
     def main(self, qPainter):
+        """
+        Основной метод, содержащий логику.
+        """
         self.game_field.draw_field(qPainter)
         self.players = {self.game_field.white_player: self.game_field.black_player,
                         self.game_field.black_player: self.game_field.white_player}
@@ -111,6 +121,9 @@ class BoardWidget(QFrame):
                 self.mouse_y = None
 
     def find_walking_checkers(self):
+        """
+        Метод ищёт шашки, которыми может ходить текущий игрок.
+        """
         result_positions = []
         max_len = 0
         for checker in self.current_player.checkers:
@@ -137,6 +150,9 @@ class BoardWidget(QFrame):
                     self.walking_checkers.append(checker)
 
     def cut_move(self, checked_x, checked_y):
+        """
+        Логика хоа со срубом. Параметры - координаты шашки, на которую планируется сделать ход.
+        """
         if self.game_field.field[checked_x][checked_y] in self.game_field.field[self.chosen_x][self.chosen_y].positions:
             self.is_cut_now = True
             previous_cell = self.game_field.field[self.chosen_x][self.chosen_y]
@@ -168,6 +184,9 @@ class BoardWidget(QFrame):
             self.game_field.field[checked_x][checked_y].check_is_king(self.game_field, self.is_cut_now)
 
     def make_step(self, checked_x, checked_y):
+        """
+        Логика хода без сруба. Параметры - координаты шашки, на которую планируется сделать ход.
+        """
         if self.game_field.field[checked_x][checked_y] in self.game_field.field[self.chosen_x][self.chosen_y].positions:
             if self.game_field.field[self.chosen_x][self.chosen_y].is_step_possible(
                     self.game_field.field[checked_x][checked_y],
@@ -181,6 +200,9 @@ class BoardWidget(QFrame):
         self.chosen_x, self.chosen_y = None, None
 
     def change_player(self):
+        """
+        Метод меняет текущего игрока.
+        """
         self.walking_checkers = []
         if not self.is_cut_now:
             for i in range(self.field_dimension):
@@ -198,6 +220,11 @@ class BoardWidget(QFrame):
         self.current_player = other_player
 
     def show_result_window(self, run_in_test=False):
+        """
+        Метод открывает окошко с результатом игры.
+        Параметр - флаг, который по умолчанию false, за исключением случаев тестирования.
+        (Сделано, чтобы при тестировании не открывались всплывающие окна).
+        """
         text = 'White player is winner!'
         if self.is_black_winner:
             text = 'Black player is winner!'
@@ -207,10 +234,16 @@ class BoardWidget(QFrame):
             self.end_window.show()
 
     def mousePressEvent(self, QMouseEvent):
+        """
+        Метод устанавливает координаты точки, на которую был совершён клик.
+        """
         self.mouse_x = QMouseEvent.pos().x() // self.cell_length
         self.mouse_y = QMouseEvent.pos().y() // self.cell_length
 
     def check_is_someone_winner(self):
+        """
+        Метод проверяет, не является ли кто-то из игроков победителем.
+        """
         if self.game_field.white_player.checkers_count == 0:
             self.is_black_winner = True
         elif self.game_field.black_player.checkers_count == 0:

@@ -9,6 +9,9 @@ from os import path
 
 
 class Board(QMainWindow):
+    """
+    Класс главного окошка, в котором главным виджетом является boardWidget.
+    """
     def __init__(self, field_dimension, current_player_color=None,
                  is_cut_now=False, cells_for_load=None,
                  white_set=set(), black_set=set(),
@@ -33,6 +36,9 @@ class Board(QMainWindow):
         self.initUI()
 
     def initUI(self):
+        """
+        Инициализация некоторых полей класса.
+        """
         resources = path.join(SCRIPT_DIR, 'resources')
         save_game_act = QAction(QIcon(path.join(resources, 'save.png')), 'Save game', self)
         save_game_act.triggered.connect(self.save_game)
@@ -58,6 +64,9 @@ class Board(QMainWindow):
         self.setFixedSize(self.size())
 
     def save_game(self):
+        """
+        Метод сохранения игры.
+        """
         with open('load_game.txt', 'w', encoding='utf-8') as f:
             f.truncate()
             f.write(('{}\n' + '@{}\n' * 8).format(self.field_dimension,
