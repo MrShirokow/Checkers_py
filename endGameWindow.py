@@ -11,6 +11,7 @@ class EndGameWindow(QWidget):
     """
     Класс окошка результата игры.
     """
+
     def __init__(self, result_text):
         super().__init__()
         self.result_text = result_text
@@ -30,8 +31,8 @@ class EndGameWindow(QWidget):
         self.setPalette(palette)
         resource_path = path.join(SCRIPT_DIR, 'resources', 'checker.png')
         self.setWindowIcon(QIcon(resource_path))
-        self.setWindowTitle('Result')
         self.setFixedSize(self.size())
+        self.setWindowTitle('Result')
 
     def paintEvent(self, q_paint_event):
         qp = QPainter()

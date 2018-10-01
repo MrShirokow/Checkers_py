@@ -76,13 +76,13 @@ class Field:
 
         return game_field
 
-    def draw_field(self, qp):
+    def draw_field(self, qpainter):
         """
         Метод отрисовки.
         """
         for field_x in range(self.field_dimension):
             for field_y in range(self.field_dimension):
-                self.field[field_x][field_y].draw_cell(qp)
+                self.field[field_x][field_y].draw_cell(qpainter)
 
     def create_king_cells(self):
         """

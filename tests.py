@@ -10,7 +10,7 @@ from os import path
 
 class StartTests(unittest.TestCase):
     def test_add_and_remove_checker(self):
-        player = Player(CHECKER_WHITE_COLOR, True, set())
+        player = Player(CHECKER_WHITE_COLOR, set())
         self.assertEqual(0, player.checkers_count)
         checker_1 = Cell(3, 4, True, CHECKER_WHITE_COLOR, CELL_BLACK_COLOR, 10, 50)
         checker_2 = Cell(7, 1, True, CHECKER_WHITE_COLOR, CELL_BLACK_COLOR, 10, 50)
@@ -30,7 +30,7 @@ class StartTests(unittest.TestCase):
         self.assertEqual(1, player.checkers_count)
 
     def test_get_player_by_color(self):
-        field_1 = Field(Player(CHECKER_WHITE_COLOR, True, set()), Player(CHECKER_BLACK_COLOR, True, set()), 10, 50)
+        field_1 = Field(Player(CHECKER_WHITE_COLOR, set()), Player(CHECKER_BLACK_COLOR, set()), 10, 50)
         player_1 = field_1.get_player_by_color(CHECKER_WHITE_COLOR)
         self.assertEqual(True, player_1 == field_1.white_player)
         player_2 = field_1.get_player_by_color(CHECKER_BLACK_COLOR)
@@ -132,17 +132,17 @@ class StartTests(unittest.TestCase):
         app.quit()
 
     def test_create_king_cells(self):
-        field = Field(Player(CHECKER_WHITE_COLOR, False, set()), Player(CHECKER_BLACK_COLOR, True, set()), 10, 50)
+        field = Field(Player(CHECKER_WHITE_COLOR, set()), Player(CHECKER_BLACK_COLOR, set()), 10, 50)
         correct_white_cells = [(0, y) for y in range(field.field_dimension)]
         correct_black_cells = [(field.field_dimension - 1, y) for y in range(field.field_dimension)]
         self.assertEqual(correct_white_cells, field.king_checkers[CHECKER_WHITE_COLOR.getRgb()])
         self.assertEqual(correct_black_cells, field.king_checkers[CHECKER_BLACK_COLOR.getRgb()])
-        field_2 = Field(Player(CHECKER_WHITE_COLOR, False, set()), Player(CHECKER_BLACK_COLOR, True, set()), 50, 50)
+        field_2 = Field(Player(CHECKER_WHITE_COLOR, set()), Player(CHECKER_BLACK_COLOR, set()), 50, 50)
         correct_white_cells = [(0, y) for y in range(field_2.field_dimension)]
         correct_black_cells = [(field_2.field_dimension - 1, y) for y in range(field_2.field_dimension)]
         self.assertEqual(correct_white_cells, field_2.king_checkers[CHECKER_WHITE_COLOR.getRgb()])
         self.assertEqual(correct_black_cells, field_2.king_checkers[CHECKER_BLACK_COLOR.getRgb()])
-        field_3 = Field(Player(CHECKER_WHITE_COLOR, False, set()), Player(CHECKER_BLACK_COLOR, True, set()), 100, 50)
+        field_3 = Field(Player(CHECKER_WHITE_COLOR, set()), Player(CHECKER_BLACK_COLOR, set()), 100, 50)
         correct_white_cells = [(0, y) for y in range(field_3.field_dimension)]
         correct_black_cells = [(field_3.field_dimension - 1, y) for y in range(field_3.field_dimension)]
         self.assertEqual(correct_white_cells, field_3.king_checkers[CHECKER_WHITE_COLOR.getRgb()])
@@ -233,8 +233,8 @@ class StartTests(unittest.TestCase):
         app.quit()
 
     def test_is_cut_possible(self):
-        white_player = Player(CHECKER_WHITE_COLOR, True, set())
-        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        white_player = Player(CHECKER_WHITE_COLOR, set())
+        black_player = Player(CHECKER_BLACK_COLOR, set())
         dict = {'True': True,
                 'False': False,
                 'None': None}
@@ -272,8 +272,8 @@ class StartTests(unittest.TestCase):
         self.assertEqual(True, field.field[0][1].is_correct_cut(field.field[5][6], field))
 
     def test_is_step_possible(self):
-        white_player = Player(CHECKER_WHITE_COLOR, True, set())
-        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        white_player = Player(CHECKER_WHITE_COLOR, set())
+        black_player = Player(CHECKER_BLACK_COLOR, set())
         current_player = white_player
         field = Field(white_player, black_player, 10, 50)
         self.assertEqual(False, field.field[0][3].is_step_possible(field.field[5][6], current_player, field))
@@ -285,8 +285,8 @@ class StartTests(unittest.TestCase):
         self.assertEqual(True, field.field[6][5].is_step_possible(field.field[5][6], current_player, field))
 
     def test_find_positions_after_step(self):
-        white_player = Player(CHECKER_WHITE_COLOR, True, set())
-        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        white_player = Player(CHECKER_WHITE_COLOR, set())
+        black_player = Player(CHECKER_BLACK_COLOR, set())
         dict = {'True': True,
                 'False': False,
                 'None': None}
@@ -328,8 +328,8 @@ class StartTests(unittest.TestCase):
         self.assertEqual(correct_positions, positions)
 
     def test_get_enemies(self):
-        white_player = Player(CHECKER_WHITE_COLOR, True, set())
-        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        white_player = Player(CHECKER_WHITE_COLOR, set())
+        black_player = Player(CHECKER_BLACK_COLOR, set())
         dict = {'True': True,
                 'False': False,
                 'None': None}
@@ -364,15 +364,15 @@ class StartTests(unittest.TestCase):
         correct_enemies = [(3, 2)]
         self.assertEqual(correct_enemies, enemies)
         enemies = field.field[5][0].get_enemies(field.field[7][2], field)
-        correct_enemies = ['Not None']
+        correct_enemies = ['No cell']
         self.assertEqual(correct_enemies, enemies)
         enemies = [(checker.x, checker.y) for checker in field.field[5][4].get_enemies(field.field[2][7], field)]
         correct_enemies = [(6, 3)]
         self.assertEqual(correct_enemies, enemies)
 
     def test_find_positions_after_cut(self):
-        white_player = Player(CHECKER_WHITE_COLOR, True, set())
-        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        white_player = Player(CHECKER_WHITE_COLOR, set())
+        black_player = Player(CHECKER_BLACK_COLOR, set())
         dict = {'True': True,
                 'False': False,
                 'None': None}
@@ -416,8 +416,8 @@ class StartTests(unittest.TestCase):
         self.assertEqual(correct_position, positions)
 
     def test_find_longest_cut(self):
-        white_player = Player(CHECKER_WHITE_COLOR, True, set())
-        black_player = Player(CHECKER_BLACK_COLOR, True, set())
+        white_player = Player(CHECKER_WHITE_COLOR, set())
+        black_player = Player(CHECKER_BLACK_COLOR, set())
         dict = {'True': True,
                 'False': False,
                 'None': None}
@@ -468,11 +468,9 @@ class StartTests(unittest.TestCase):
         self.assertEqual([[]], field.field[0][1].positions)
 
     def test_move(self):
-        white_player = Player(CHECKER_WHITE_COLOR, True, set())
-        black_player = Player(CHECKER_BLACK_COLOR, True, set())
-        dict = {'True': True,
-                'False': False,
-                'None': None}
+        white_player = Player(CHECKER_WHITE_COLOR, set())
+        black_player = Player(CHECKER_BLACK_COLOR, set())
+        dict = {'False': False, 'None': None, 'True': True, }
         field = Field(white_player, black_player, 10, 50)
         for_test_dir = path.join(SCRIPT_DIR, 'for_tests')
         with open(path.join(for_test_dir, 'field_2.txt'), 'r', encoding='utf-8') as f:
