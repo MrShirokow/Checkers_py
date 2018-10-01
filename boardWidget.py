@@ -24,19 +24,17 @@ class BoardWidget(QFrame):
                  chosen_x=None, chosen_y=None,
                  mouse_x=None, mouse_y=None,
                  game_mode=None, really_player_color=None):
-        super(BoardWidget, self).__init__()
+        super().__init__()
         self.walking_checkers = []
         self.field_dimension = field_dimension
         self.cell_length = cell_length
         self.really_player_color = really_player_color
         self.game_mode = game_mode
         self.cells_for_load = cells_for_load
-        self.white_set = white_set
-        self.black_set = black_set
         self.board = board
         self.timer = QTimer()
-        white_player = Player(CHECKER_WHITE_COLOR, True, self.white_set)
-        black_player = Player(CHECKER_BLACK_COLOR, True, self.black_set)
+        white_player = Player(CHECKER_WHITE_COLOR, white_set)
+        black_player = Player(CHECKER_BLACK_COLOR, black_set)
         self.game_field = Field(white_player, black_player, field_dimension, self.cell_length, cells_for_load)
         if current_player_color is None:
             self.current_player = self.game_field.white_player
@@ -151,7 +149,7 @@ class BoardWidget(QFrame):
 
     def cut_move(self, checked_x, checked_y):
         """
-        Логика хоа со срубом. Параметры - координаты шашки, на которую планируется сделать ход.
+        Логика хода со срубом. Параметры - координаты шашки, на которую планируется сделать ход.
         """
         if self.game_field.field[checked_x][checked_y] in self.game_field.field[self.chosen_x][self.chosen_y].positions:
             self.is_cut_now = True
@@ -225,9 +223,9 @@ class BoardWidget(QFrame):
         Параметр - флаг, который по умолчанию false, за исключением случаев тестирования.
         (Сделано, чтобы при тестировании не открывались всплывающие окна).
         """
-        text = 'White player is winner!'
-        if self.is_black_winner:
-            text = 'Black player is winner!'
+        with open('load_game.txt', 'w', encoding='utf-8') as f:
+            f.truncate()
+        text = 'White player is winner!' if self.is_black_winner else 'Black player is winner!'
         self.board.close()
         self.end_window = EndGameWindow(text)
         if not run_in_test:

@@ -61,7 +61,7 @@ class Cell():
         else:
             for cell in positions:
                 enemy = self.get_enemies(cell, game_field)[0]
-                if type(enemy) is Cell:
+                if isinstance(enemy, Cell):
                     if not enemy.is_cut_down:
                         enemy.is_cut_down = True
                         result_positions.append(cell)
@@ -170,7 +170,7 @@ class Cell():
                 if game_field.field[start_x][start_y].checker_color != self.checker_color:
                     enemy_cells.append(game_field.field[start_x][start_y])
                 else:
-                    enemy_cells.append('Not None')
+                    enemy_cells.append('No cell')
         return enemy_cells
 
     def find_positions_after_step(self, current_player, game_field):
@@ -227,7 +227,7 @@ class Cell():
         if self.checker and self.is_king and not empty_cell.checker:
             if fabs(self.x - empty_cell.x) == fabs(self.y - empty_cell.y):
                 enemy_cells = self.get_enemies(empty_cell, game_field)
-                return len(enemy_cells) == 1 and type(enemy_cells[0]) is Cell
+                return len(enemy_cells) == 1 and isinstance(enemy_cells[0], Cell)
 
         x = (self.y + empty_cell.y) // 2
         y = (self.x + empty_cell.x) // 2
@@ -240,7 +240,7 @@ class Cell():
         Метод делает сруб шашки, вставая на выбранную клетку.
         empty_cell - клетка, на которую планируется делать ход.
         enemy_cells - вражеские клетки между текущей и выбранной клеткой.
-        game - текущая партия.
+        game - текущая игра.
         """
         x = None
         y = None

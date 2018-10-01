@@ -15,7 +15,7 @@ class StartMenu(QMainWindow):
     """
 
     def __init__(self):
-        super(StartMenu, self).__init__()
+        super().__init__()
         self.game_mode = None
         self.field_dimension = None
         self.really_player_color = None
@@ -119,22 +119,21 @@ class StartMenu(QMainWindow):
         self.msgBox.setWindowIcon(QIcon(attention_path))
         self.msgBox.setIcon(QMessageBox.Information)
         if self.game_mode is None:
-            self.msgBox.setText('Choose game mode!')
-            if not run_in_test:
-                self.msgBox.exec()
+            self.exec_msgBox('Выберите игровой мод!', run_in_test)
         elif self.really_player_color is None:
-            self.msgBox.setText('Choose start player color!')
-            if not run_in_test:
-                self.msgBox.exec()
+            self.exec_msgBox('Выберите цвет игрока!', run_in_test)
         elif self.field_dimension is None:
-            self.msgBox.setText("Choose field dimension!")
-            if not run_in_test:
-                self.msgBox.exec()
+            self.exec_msgBox("Выберите размерность поля!", run_in_test)
         else:
             self.close()
             self.main_window = Board(self.field_dimension, white_set=set(), black_set=set(),
                                      game_mode=self.game_mode, really_player_color=self.really_player_color)
             self.main_window.show()
+
+    def exec_msgBox(self, text, run_in_test):
+        self.msgBox.setText(text)
+        if not run_in_test:
+            self.msgBox.exec()
 
     def load_game(self, run_in_test=False):
         """

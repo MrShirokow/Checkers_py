@@ -10,7 +10,7 @@ class Player:
     Класс игрока.
     """
 
-    def __init__(self, color, is_really_player, checkers_set):
+    def __init__(self, color, checkers_set, is_really_player=True):
         self.is_really_player = is_really_player
         self.checkers_count = len(checkers_set)
         self.color = color
